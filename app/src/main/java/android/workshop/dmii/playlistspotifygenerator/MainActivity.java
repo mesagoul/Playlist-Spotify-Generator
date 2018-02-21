@@ -1,9 +1,11 @@
 package android.workshop.dmii.playlistspotifygenerator;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -39,6 +41,18 @@ public class MainActivity extends AppCompatActivity {
                 AuthenticationClient.openLoginActivity(MainActivity.this, REQUEST_CODE, request);
             }
         });
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        // Check if result comes from the correct activity
+        if (requestCode == REQUEST_CODE) {
+            AuthenticationResponse response = AuthenticationClient.getResponse(resultCode, data);
+            if (response.getType() == AuthenticationResponse.Type.TOKEN) {
+                Log.d("AccessToken", response.getAccessToken());}
+        }
     }
 
     @Override
