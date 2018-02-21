@@ -1,4 +1,4 @@
-package android.workshop.dmii.playlistspotifygenerator;
+package android.workshop.dmii.playlistspotifygenerator.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.workshop.dmii.playlistspotifygenerator.R;
 
 import com.spotify.sdk.android.authentication.AuthenticationClient;
 import com.spotify.sdk.android.authentication.AuthenticationRequest;
