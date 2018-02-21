@@ -14,9 +14,9 @@ import com.spotify.sdk.android.authentication.AuthenticationResponse;
 
 public class MainActivity extends AppCompatActivity {
 
-    private static final String CLIENT_ID = "00b7d581f8ef4bb184ee94d055659762"; // FIXME
+    private static final String CLIENT_ID = "c4636ffdc7844503ba3e89d7c4908d66";
     private static final int REQUEST_CODE = 1001;
-    private static final String REDIRECT_URI = "ddi16testapp://callback"; // FIXME
+    private static final String REDIRECT_URI = "dmii18://callback";
 
 
     @Override
