@@ -10,6 +10,7 @@ import java.util.ArrayList;
 public class Playlist {
     private int id;
     private ArrayList<Music> musicList;
+    private String name;
 
     public Playlist(int id) {
         this.id = id;
@@ -22,28 +23,29 @@ public class Playlist {
     public ArrayList<Music> getMusicList() {
         return musicList;
     }
-
     public void setMusicList(ArrayList<Music> musicList) {
         this.musicList = musicList;
     }
-
     public void create(){
 
     }
-
     public ArrayList<String> read(int id){
 
         return null;
+    }
+    public String getName() {
+        return name;
+    }
+    public void setName(String name) {
+        this.name = name;
     }
 
     public void update(){
 
     }
-
     public void delete(){
 
     }
-
     public void save(){
 
     }

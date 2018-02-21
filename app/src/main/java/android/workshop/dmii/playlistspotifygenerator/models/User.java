@@ -1,6 +1,7 @@
 package android.workshop.dmii.playlistspotifygenerator.models;
 
 import java.lang.reflect.Array;
+import java.util.ArrayList;
 
 /**
  * Created by admin on 21/02/2018.
@@ -12,7 +13,7 @@ public class User {
     private String name;
     private String login;
     private String token;
-    private ArrayList<PlayList> playListList;
+    private ArrayList<Playlist> playListList;
     private ArrayList<Music> MusicList;
 
     public User(Integer id) {
@@ -40,10 +41,10 @@ public class User {
     public void setToken(String token) {
         this.token = token;
     }
-    public ArrayList<PlayList> getPlayListList() {
+    public ArrayList<Playlist> getPlayListList() {
         return playListList;
     }
-    public void setPlayListList(ArrayList<PlayList> playListList) {
+    public void setPlayListList(ArrayList<Playlist> playListList) {
         this.playListList = playListList;
     }
     public ArrayList<Music> getMusicList() {
