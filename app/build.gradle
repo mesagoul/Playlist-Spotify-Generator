@@ -27,4 +27,5 @@ dependencies {
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
     compile 'com.github.spotify:android-auth:master'
     implementation 'com.android.support:design:27.0.2'
+    compile 'com.github.kaaes:spotify-web-api-android:0.4.1'
 }

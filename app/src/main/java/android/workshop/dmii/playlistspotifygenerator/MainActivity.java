@@ -14,6 +14,16 @@ import com.spotify.sdk.android.authentication.AuthenticationClient;
 import com.spotify.sdk.android.authentication.AuthenticationRequest;
 import com.spotify.sdk.android.authentication.AuthenticationResponse;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import kaaes.spotify.webapi.android.SpotifyApi;
+import kaaes.spotify.webapi.android.SpotifyService;
+import kaaes.spotify.webapi.android.models.Recommendations;
+import retrofit.Callback;
+import retrofit.RetrofitError;
+import retrofit.client.Response;
+
 public class MainActivity extends AppCompatActivity {
 
     private static final String CLIENT_ID = "c4636ffdc7844503ba3e89d7c4908d66";
@@ -52,6 +62,26 @@ public class MainActivity extends AppCompatActivity {
             AuthenticationResponse response = AuthenticationClient.getResponse(resultCode, data);
             if (response.getType() == AuthenticationResponse.Type.TOKEN) {
                 Log.d("AccessToken", response.getAccessToken());}
+
+            SpotifyApi api = new SpotifyApi();
+            String token =response.getAccessToken();
+            api.setAccessToken(token);
+
+            SpotifyService spotify = api.getService();
+
+            Map<String, Object> options = new HashMap<>();
+            options.put("seed_genres", "electro");
+            spotify.getRecommendations(options, new Callback<Recommendations>() {
+                @Override
+                public void success(Recommendations recommendations, Response response) {
+                    Log.d("Recommendations success", String.valueOf(recommendations.tracks.size()));
+                }
+
+                @Override
+                public void failure(RetrofitError error) {
+                    Log.e("Recommendations error", error.getMessage());
+                }
+            });
         }
     }
 
