@@ -35,5 +35,22 @@
         </menu>
     </item>
 
+
+    <item android:title="D">
+    <menu>
+        <group android:enabled="false">
+        <item
+            android:id="@+id/nav_shared"
+            android:icon="@drawable/ic_menu_share"
+            android:title="Share" />
+        <item
+            android:id="@+id/nav_sendd"
+            android:icon="@drawable/ic_menu_send"
+            android:title="Send" />
+        </group>
+    </menu>
+</item>
+
+
 </menu>
 

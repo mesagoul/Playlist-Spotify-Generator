@@ -1,105 +1,39 @@
 package android.workshop.dmii.playlistspotifygenerator.activities;
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
+import android.os.PersistableBundle;
+import android.support.annotation.Nullable;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.Button;
 import android.workshop.dmii.playlistspotifygenerator.R;
 
-import com.spotify.sdk.android.authentication.AuthenticationClient;
-import com.spotify.sdk.android.authentication.AuthenticationRequest;
-import com.spotify.sdk.android.authentication.AuthenticationResponse;
-
-import java.util.HashMap;
-import java.util.Map;
-
-import kaaes.spotify.webapi.android.SpotifyApi;
-import kaaes.spotify.webapi.android.SpotifyService;
-import kaaes.spotify.webapi.android.models.Recommendations;
-import retrofit.Callback;
-import retrofit.RetrofitError;
-import retrofit.client.Response;
+/**
+ * Created by admin on 06/03/2018.
+ */
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
 
-    private static final String CLIENT_ID = "c4636ffdc7844503ba3e89d7c4908d66";
-    private static final int REQUEST_CODE = 1001;
-    private static final String REDIRECT_URI = "dmii18://callback";
-
-
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    public void onCreate(@Nullable Bundle savedInstanceState, @Nullable PersistableBundle persistentState) {
+        super.onCreate(savedInstanceState, persistentState);
+
         setContentView(R.layout.activity_main);
+
+        // SET TOOLBAR
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        //FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        Button connectionButton = (Button) findViewById(R.id.activity_main_login_button);
-        connectionButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                AuthenticationRequest.Builder builder =
-                        new AuthenticationRequest.Builder(CLIENT_ID, AuthenticationResponse.Type.TOKEN, REDIRECT_URI);
-
-                builder.setScopes(new String[]{"streaming"});
-                AuthenticationRequest request = builder.build();
-
-                AuthenticationClient.openLoginActivity(MainActivity.this, REQUEST_CODE, request);
-            }
-        });
-
+        // ADD NAVIGATION BAR TO CONTEXT
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
 
-        // Check if result comes from the correct activity
-        if (requestCode == REQUEST_CODE) {
-            AuthenticationResponse response = AuthenticationClient.getResponse(resultCode, data);
-            if (response.getType() == AuthenticationResponse.Type.TOKEN) {
-                Log.d("AccessToken", response.getAccessToken());}
-
-            SpotifyApi api = new SpotifyApi();
-            String token =response.getAccessToken();
-            api.setAccessToken(token);
-
-            SpotifyService spotify = api.getService();
-
-            Map<String, Object> options = new HashMap<>();
-            options.put("seed_genres", "electro");
-            spotify.getRecommendations(options, new Callback<Recommendations>() {
-                @Override
-                public void success(Recommendations recommendations, Response response) {
-                    Log.d("Recommendations success", String.valueOf(recommendations.tracks.size()));
-                }
-
-                @Override
-                public void failure(RetrofitError error) {
-                    Log.e("Recommendations error", error.getMessage());
-                }
-            });
-        }
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
-    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -140,5 +74,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         return true;
     }
 
+
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
+    }
 
 }
