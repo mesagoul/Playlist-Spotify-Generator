@@ -12,11 +12,14 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.workshop.dmii.playlistspotifygenerator.R;
+import android.workshop.dmii.playlistspotifygenerator.network.SpotifyApiWrapper;
 
 import com.spotify.sdk.android.authentication.AuthenticationClient;
 import com.spotify.sdk.android.authentication.AuthenticationRequest;
 import com.spotify.sdk.android.authentication.AuthenticationResponse;
 import com.spotify.sdk.android.authentication.LoginActivity;
+
+import kaaes.spotify.webapi.android.SpotifyApi;
 
 public class LogInActivity extends AppCompatActivity{
 
@@ -42,6 +45,7 @@ public class LogInActivity extends AppCompatActivity{
 
         token = sharedPreferences.getString(TOKEN, null);
         if(token != null){
+            SpotifyApiWrapper.getInstance().setToken(token);
             startActivity(toMainActivity);
             finish();
         }
@@ -77,6 +81,7 @@ public class LogInActivity extends AppCompatActivity{
                         .apply();
 
 
+                SpotifyApiWrapper.getInstance().setToken(token);
                 startActivity(toMainActivity);
                 finish();
 
