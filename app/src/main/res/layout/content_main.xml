@@ -9,5 +9,13 @@
     tools:showIn="@layout/app_bar_main"
     >
 
+    <fragment
+        android:name="android.workshop.dmii.playlistspotifygenerator.fragments.PlaylistListFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/fragment_playlist"
+        />
+
+
 
 </android.support.constraint.ConstraintLayout>
