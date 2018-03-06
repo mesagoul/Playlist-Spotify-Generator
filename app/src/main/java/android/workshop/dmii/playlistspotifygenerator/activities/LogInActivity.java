@@ -26,6 +26,7 @@ public class LogInActivity extends AppCompatActivity{
     private static final String AUTH = "AUTH";
     private static final String TOKEN = "TOKEN";
     private String token;
+    private Intent toMainActivity;
 
 
     @Override
@@ -35,13 +36,12 @@ public class LogInActivity extends AppCompatActivity{
 
         //FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         Button connectionButton = (Button) findViewById(R.id.activity_login_button);
+        toMainActivity = new Intent(LogInActivity.this, MainActivity.class);
 
         SharedPreferences sharedPreferences = getBaseContext().getSharedPreferences(AUTH, MODE_PRIVATE);
 
         token = sharedPreferences.getString(TOKEN, null);
         if(token != null){
-            Log.d(LoginActivity.class.getSimpleName(),token);
-            Intent toMainActivity = new Intent(LogInActivity.this, MainActivity.class);
             startActivity(toMainActivity);
             finish();
         }
@@ -77,6 +77,9 @@ public class LogInActivity extends AppCompatActivity{
                         .apply();
 
 
+                startActivity(toMainActivity);
+                finish();
+
                 /*
                     GET RECOMMENDATIONS
                 SpotifyApi api = new SpotifyApi();
@@ -102,5 +105,4 @@ public class LogInActivity extends AppCompatActivity{
             }
         }
     }
-
 }
