@@ -6,7 +6,6 @@ import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.Log;
 import android.view.View;
 import android.workshop.dmii.playlistspotifygenerator.R;
 import android.workshop.dmii.playlistspotifygenerator.network.SpotifyApiWrapper;
@@ -32,7 +31,7 @@ public class SplashScreen extends Activity {
     private AuthenticationRequest.Builder builder;
     private AuthenticationRequest request;
 
-    private Intent toMainActivity;
+    private Intent toRefreshActivity;
     private Intent toLogInActivity;
 
     @Override
@@ -52,7 +51,7 @@ public class SplashScreen extends Activity {
 
         // DECLARE INTENTS
         toLogInActivity = new Intent(SplashScreen.this, LogInActivity.class);
-        toMainActivity = new Intent(SplashScreen.this, MainActivity.class);
+        toRefreshActivity = new Intent(SplashScreen.this, DashboardActivity.class);
 
 
 
@@ -105,7 +104,7 @@ public class SplashScreen extends Activity {
                 SpotifyApiWrapper.getInstance().setToken(token);
 
                 // GO TO MAIN ACTIVITY
-                startActivity(toMainActivity);
+                startActivity(toRefreshActivity);
                 finish();
             }
         }

@@ -3,12 +3,8 @@ package android.workshop.dmii.playlistspotifygenerator.activities;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.support.v4.view.GravityCompat;
-import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.workshop.dmii.playlistspotifygenerator.R;
@@ -17,9 +13,6 @@ import android.workshop.dmii.playlistspotifygenerator.network.SpotifyApiWrapper;
 import com.spotify.sdk.android.authentication.AuthenticationClient;
 import com.spotify.sdk.android.authentication.AuthenticationRequest;
 import com.spotify.sdk.android.authentication.AuthenticationResponse;
-import com.spotify.sdk.android.authentication.LoginActivity;
-
-import kaaes.spotify.webapi.android.SpotifyApi;
 
 public class LogInActivity extends AppCompatActivity{
 
@@ -43,7 +36,7 @@ public class LogInActivity extends AppCompatActivity{
 
         //FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         Button connectionButton = (Button) findViewById(R.id.activity_login_button);
-        toMainActivity = new Intent(LogInActivity.this, MainActivity.class);
+        toMainActivity = new Intent(LogInActivity.this, DashboardActivity.class);
 
         connectionButton.setOnClickListener(new View.OnClickListener() {
             @Override
