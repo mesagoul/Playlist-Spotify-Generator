@@ -24,12 +24,14 @@ import kaaes.spotify.webapi.android.SpotifyApi;
 public class LogInActivity extends AppCompatActivity{
 
     private static final String CLIENT_ID = "c4636ffdc7844503ba3e89d7c4908d66";
-    private static final int REQUEST_CODE = 1001;
     private static final String REDIRECT_URI = "dmii18://callback";
+    private static final int REQUEST_CODE = 1001;
     private static final String AUTH = "AUTH";
     private static final String TOKEN = "TOKEN";
     private String token;
     private Intent toMainActivity;
+    private AuthenticationRequest.Builder builder;
+    private AuthenticationRequest request;
 
 
     @Override
@@ -37,31 +39,26 @@ public class LogInActivity extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_log_in);
 
+        loadAuthClient();
+
         //FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         Button connectionButton = (Button) findViewById(R.id.activity_login_button);
         toMainActivity = new Intent(LogInActivity.this, MainActivity.class);
 
-        SharedPreferences sharedPreferences = getBaseContext().getSharedPreferences(AUTH, MODE_PRIVATE);
-
-        token = sharedPreferences.getString(TOKEN, null);
-        if(token != null){
-            SpotifyApiWrapper.getInstance().setToken(token);
-            startActivity(toMainActivity);
-            finish();
-        }
-
         connectionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                AuthenticationRequest.Builder builder =
-                        new AuthenticationRequest.Builder(CLIENT_ID, AuthenticationResponse.Type.TOKEN, REDIRECT_URI);
-
-                builder.setScopes(new String[]{"streaming"});
-                AuthenticationRequest request = builder.build();
-
                 AuthenticationClient.openLoginActivity(LogInActivity.this, REQUEST_CODE, request);
             }
         });
+    }
+
+    public void loadAuthClient(){
+
+       builder  = new AuthenticationRequest.Builder(CLIENT_ID, AuthenticationResponse.Type.TOKEN, REDIRECT_URI);
+       builder.setScopes(new String[]{"streaming"});
+       request = builder.build();
+
     }
 
     @Override
@@ -81,6 +78,7 @@ public class LogInActivity extends AppCompatActivity{
                         .apply();
 
 
+                Log.d("LogInActivity : ", token);
                 SpotifyApiWrapper.getInstance().setToken(token);
                 startActivity(toMainActivity);
                 finish();
