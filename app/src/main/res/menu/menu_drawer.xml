@@ -4,7 +4,7 @@
     tools:showIn="navigation_view">
 
     <group android:checkableBehavior="single">
-        <item
+        <!--<item
             android:id="@+id/nav_camera"
             android:icon="@drawable/ic_menu_camera"
             android:title="Import" />
@@ -19,10 +19,21 @@
         <item
             android:id="@+id/nav_manage"
             android:icon="@drawable/ic_menu_manage"
-            android:title="Tools" />
+            android:title="Tools" />-->
+
+        <item
+            android:id="@+id/generate_playlist"
+            android:title="@string/generate_playslit"
+            />
+
+        <item
+            android:id="@+id/create_playlist"
+            android:title="@string/create_playlist"
+            />
+
     </group>
 
-    <item android:title="Communicate">
+    <!--<item android:title="Communicate">
         <menu>
             <item
                 android:id="@+id/nav_share"
@@ -33,23 +44,23 @@
                 android:icon="@drawable/ic_menu_send"
                 android:title="Send" />
         </menu>
-    </item>
+    </item>-->
 
 
-    <item android:title="D">
-    <menu>
-        <group android:enabled="false">
-        <item
-            android:id="@+id/nav_shared"
-            android:icon="@drawable/ic_menu_share"
-            android:title="Share" />
-        <item
-            android:id="@+id/nav_sendd"
-            android:icon="@drawable/ic_menu_send"
-            android:title="Send" />
-        </group>
-    </menu>
-</item>
+    <!--<item android:title="D">
+        <menu>
+            <group android:enabled="false">
+            <item
+                android:id="@+id/nav_shared"
+                android:icon="@drawable/ic_menu_share"
+                android:title="Share" />
+            <item
+                android:id="@+id/nav_sendd"
+                android:icon="@drawable/ic_menu_send"
+                android:title="Send" />
+            </group>
+        </menu>
+    </item>-->
 
 
 </menu>
