@@ -7,37 +7,47 @@ import java.util.ArrayList;
  */
 
 public class Music {
-    private Integer id;
-    private String title;
-    private Float duration;
+
+    private String id;
+    private String name;
+    private Integer duration;
     private Integer score;
+    private String url;
     private ArrayList<Genre> genreList;
     private String artist;
+    private String albumName;
 
 
-    public Music(Integer id) {
+    public Music(String id, String name, String artist, String albumName, String url, Integer duration) {
         this.id = id;
+        this.name = name;
+        this.artist = artist;
+        this.albumName = albumName;
+        this.url = url;
+        this.duration = duration;
+
     }
 
 
 
-    public int getId() {
+
+    public String getId() {
         return id;
     }
 
-    public String getTitle() {
-        return title;
+    public String getName() {
+        return name;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public float getDuration() {
         return duration;
     }
 
-    public void setDuration(Float duration) {
+    public void setDuration(Integer duration) {
         this.duration = duration;
     }
 
