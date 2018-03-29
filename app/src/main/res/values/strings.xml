@@ -3,4 +3,6 @@
     <string name="action_settings">Settings</string>
     <string name="connect">Se connecter</string>
     <string name="splash_logo">SplashScreen Logo</string>
+    <string name="generate_playslit">Générer Playlist</string>
+    <string name="create_playlist">Créer Playlist</string>
 </resources>

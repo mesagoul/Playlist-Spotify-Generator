@@ -13,6 +13,7 @@ import android.widget.GridView;
 import android.widget.Toast;
 import android.workshop.dmii.playlistspotifygenerator.R;
 import android.workshop.dmii.playlistspotifygenerator.adapters.ImageAdapter;
+import android.workshop.dmii.playlistspotifygenerator.models.Playlist;
 import android.workshop.dmii.playlistspotifygenerator.network.SpotifyApiWrapper;
 
 import java.util.HashMap;
@@ -35,14 +36,19 @@ import retrofit.client.Response;
 
 public class PlaylistListFragment  extends Fragment{
 
-
     private GridView listPlaylist;
+    public static final String PLAYLIST_ID_KEY = "PLAYLIST_ID_KEY";
+    //private PlaylistListViewModel playlistModel;
+
+
+    public PlaylistListFragment(){
+        //empty constructor
+    }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         ViewGroup v = (ViewGroup) inflater.inflate(R.layout.fragment_playlist, container,false);
-        listPlaylist = (GridView) v.findViewById(R.id.playlistList);
         return v;
     }
 
@@ -50,13 +56,22 @@ public class PlaylistListFragment  extends Fragment{
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        listPlaylist = (GridView) view.findViewById(R.id.playlistList);
+
         createGridView();
         getPlayLists();
     }
 
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        String playlistId = getArguments().getString(PLAYLIST_ID_KEY);
+
+
+    }
+
     private void createGridView(){
-
-
         listPlaylist.setAdapter(new ImageAdapter(this.getContext()));
 
         listPlaylist.setOnItemClickListener(new AdapterView.OnItemClickListener() {
