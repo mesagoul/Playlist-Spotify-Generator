@@ -3,10 +3,11 @@ package android.workshop.dmii.playlistspotifygenerator.models;
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.ViewModel;
+import android.arch.lifecycle.ViewModelProviders;
+import android.content.Context;
 import android.util.Log;
 import android.workshop.dmii.playlistspotifygenerator.network.SpotifyApiWrapper;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -16,6 +17,7 @@ import kaaes.spotify.webapi.android.SpotifyError;
 import kaaes.spotify.webapi.android.SpotifyService;
 import kaaes.spotify.webapi.android.models.Pager;
 import kaaes.spotify.webapi.android.models.PlaylistSimple;
+import kaaes.spotify.webapi.android.models.PlaylistTrack;
 import kaaes.spotify.webapi.android.models.UserPrivate;
 import retrofit.Callback;
 import retrofit.RetrofitError;
@@ -85,6 +87,7 @@ public class User extends ViewModel{
     public void init(){
         this.loadUser();
         this.loadPlayLists();
+        this.loadMusics();
     }
 
     private void loadUser(){
@@ -105,6 +108,10 @@ public class User extends ViewModel{
 
     }
 
+    private void loadMusics(){
+
+    }
+
     private void loadPlayLists(){
 
         Map<String, Object> options = new HashMap<>();
@@ -118,20 +125,22 @@ public class User extends ViewModel{
 
             @Override
             public void success(Pager<PlaylistSimple> playlistSimplePager, Response response) {
-                Log.d("Playslist", "d");
 
-                // A DEPLACER
                 ArrayList<Playlist> playListListTemp = new ArrayList<Playlist>();
+
+                // TODO Il faut mêttre tout dans le fragment pour pouvoir utiliser le livaData car il requiert l'utilisation d'un fragment dans le .of(this) Bisou
+                /*viewModel = ViewModelProviders.of(this).get(User.class);
+                viewModel.init();
+                viewModel.getPlayListList().observe(this, playListList -> {
+                    Log.d("PlayList", playListList.toString());
+                });*/
+
                 for (PlaylistSimple aPlayList : playlistSimplePager.items){
-                    Playlist p = new Playlist(aPlayList.id);
+                    Playlist p = new Playlist(aPlayList.id, aPlayList.name);
                     playListListTemp.add(p);
                 }
-                // -----------------------------
 
-                //playListList.setValue(playListListTemp);
-
-                // Il faut que ça ressemble à ça
-               // playListList.setValue(new ArrayList<Playlist>(playlistSimplePager));
+               playListList.setValue(playListListTemp);
 
             }
         });

@@ -1,26 +1,50 @@
 package android.workshop.dmii.playlistspotifygenerator.models;
 
+import android.arch.lifecycle.LiveData;
+import android.arch.lifecycle.MutableLiveData;
+import android.arch.lifecycle.ViewModel;
+import android.util.Log;
+import android.workshop.dmii.playlistspotifygenerator.network.SpotifyApiWrapper;
+
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 
+import kaaes.spotify.webapi.android.SpotifyService;
+import kaaes.spotify.webapi.android.models.Pager;
 import kaaes.spotify.webapi.android.models.PlaylistSimple;
+import kaaes.spotify.webapi.android.models.PlaylistTrack;
 import kaaes.spotify.webapi.android.models.Track;
+import retrofit.Callback;
+import retrofit.RetrofitError;
+import retrofit.client.Response;
 
 /**
  * Created by benja on 21/02/2018.
  */
 
-public class Playlist {
+public class Playlist extends ViewModel {
+
+    //define callback interface
+    interface PlayListListener {
+        void onTracksLoaded(ArrayList<Music> musicListTemp);
+    }
 
     private String id;
-    private ArrayList<Music> musicList;
+    private MutableLiveData<ArrayList<Music>> musicList = new MutableLiveData<>();
     private String name;
+    private SpotifyService spotify;
 
 
-    public Playlist(String id, String name, ArrayList tracks) {
+    public Playlist(String id, String name) {
         this.id = id;
         this.name = name;
-        //this.musicList = convertTracks(tracks);
+        spotify = SpotifyApiWrapper.getInstance().getService();
+        getTracksFromPlayList(this.id, new PlayListListener() {
+            @Override
+            public void onTracksLoaded(ArrayList<Music> musicListTemp) {
+                musicList.setValue(musicListTemp);
+            }
+        });
     }
 
     /*public ArrayList<Music> convertTracks(ArrayList tracks) {
@@ -37,12 +61,8 @@ public class Playlist {
         return id;
     }
 
-    public ArrayList<Music> getMusicList() {
+    public LiveData<ArrayList<Music>> getMusicList() {
         return musicList;
-    }
-
-    public void setMusicList(ArrayList<Music> musicList) {
-        this.musicList = musicList;
     }
 
     public void create(){}
@@ -62,5 +82,33 @@ public class Playlist {
     public void delete(){}
 
     public void save(){}
+
+
+    private void getTracksFromPlayList(String playListId, PlayListListener callBack){
+
+        ArrayList<Music> musicListTemp  = new ArrayList<Music>();
+
+        spotify.getPlaylistTracks(getId(), playListId, new Callback<Pager<PlaylistTrack>>() {
+            @Override
+            public void success(Pager<PlaylistTrack> playlistTrackPager, Response response) {
+
+                ArrayList<Music> musicListTemp  = new ArrayList<Music>();
+
+                for (PlaylistTrack aTrack : playlistTrackPager.items){
+                    musicListTemp.add(new Music(aTrack.track.id,aTrack.track.name, aTrack.track.artists.get(0).name, aTrack.track.album.name, aTrack.track.preview_url, (int) aTrack.track.duration_ms));
+                }
+
+                callBack.onTracksLoaded(musicListTemp);
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+
+                Log.d("Playslist", error.toString());
+
+                callBack.onTracksLoaded(musicListTemp);
+            }
+        });
+    }
 
 }
