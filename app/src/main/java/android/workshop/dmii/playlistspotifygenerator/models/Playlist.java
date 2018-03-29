@@ -30,7 +30,7 @@ public class Playlist extends ViewModel {
     }
 
     private String id;
-    private MutableLiveData<ArrayList<Music>> musicList = new MutableLiveData<>();
+    private ArrayList<Music> musicList;
     private String name;
     private SpotifyService spotify;
 
@@ -39,10 +39,15 @@ public class Playlist extends ViewModel {
         this.id = id;
         this.name = name;
         spotify = SpotifyApiWrapper.getInstance().getService();
-        getTracksFromPlayList(this.id, new PlayListListener() {
+
+    }
+
+    public void loadMusics(String userId, User.UserListeners listeners){
+        getTracksFromPlayList(this.id, userId, new PlayListListener() {
             @Override
             public void onTracksLoaded(ArrayList<Music> musicListTemp) {
-                musicList.setValue(musicListTemp);
+                musicList = musicListTemp;
+                listeners.onPlayListReady();
             }
         });
     }
@@ -61,7 +66,7 @@ public class Playlist extends ViewModel {
         return id;
     }
 
-    public LiveData<ArrayList<Music>> getMusicList() {
+    public ArrayList<Music> getMusicList() {
         return musicList;
     }
 
@@ -84,11 +89,11 @@ public class Playlist extends ViewModel {
     public void save(){}
 
 
-    private void getTracksFromPlayList(String playListId, PlayListListener callBack){
+    private void getTracksFromPlayList(String playListId, String userId, PlayListListener callBack){
 
         ArrayList<Music> musicListTemp  = new ArrayList<Music>();
 
-        spotify.getPlaylistTracks(getId(), playListId, new Callback<Pager<PlaylistTrack>>() {
+        spotify.getPlaylistTracks(userId, playListId, new Callback<Pager<PlaylistTrack>>() {
             @Override
             public void success(Pager<PlaylistTrack> playlistTrackPager, Response response) {
 

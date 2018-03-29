@@ -69,7 +69,7 @@ public class PlaylistListFragment  extends Fragment{
         super.onActivityCreated(savedInstanceState);
 
         viewModel = ViewModelProviders.of(this).get(User.class);
-        viewModel.init();
+        viewModel.loadUser();
         viewModel.getPlayListList().observe(this, playListList -> {
             // TODO ici on à une ListPlaylist
             Log.d("PlayList", playListList.toString());

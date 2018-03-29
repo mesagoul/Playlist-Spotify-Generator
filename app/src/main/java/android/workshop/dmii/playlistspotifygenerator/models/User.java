@@ -29,6 +29,10 @@ import retrofit.client.Response;
 
 public class User extends ViewModel{
 
+    interface UserListeners{
+        void onPlayListReady();
+    }
+
     private static volatile User sInstance;
 
     private String id;
@@ -45,6 +49,16 @@ public class User extends ViewModel{
         }
         spotify = SpotifyApiWrapper.getInstance().getService();
     }
+
+    public static User getInstance() {
+        if (sInstance == null) {
+            synchronized (User.class) {
+                if (sInstance == null) sInstance = new User();
+            }
+        }
+        return sInstance;
+    }
+
 
     public String getId() {
         return id;
@@ -84,20 +98,16 @@ public class User extends ViewModel{
         // do something ...
     }
 
-    public void init(){
-        this.loadUser();
-        this.loadPlayLists();
-        this.loadMusics();
-    }
 
-    private void loadUser(){
+    public void loadUser(){
 
         spotify.getMe(new Callback<UserPrivate>() {
             @Override
             public void success(UserPrivate userPrivate, Response response) {
-                Log.d("USER","Eror while trying to get User");
                 id = userPrivate.id;
                 name = userPrivate.display_name;
+
+                loadPlayLists();
             }
 
             @Override
@@ -105,10 +115,6 @@ public class User extends ViewModel{
                 Log.d("USER","Eror while trying to get User");
             }
         });
-
-    }
-
-    private void loadMusics(){
 
     }
 
@@ -128,20 +134,16 @@ public class User extends ViewModel{
 
                 ArrayList<Playlist> playListListTemp = new ArrayList<Playlist>();
 
-                // TODO Il faut mêttre tout dans le fragment pour pouvoir utiliser le livaData car il requiert l'utilisation d'un fragment dans le .of(this) Bisou
-                /*viewModel = ViewModelProviders.of(this).get(User.class);
-                viewModel.init();
-                viewModel.getPlayListList().observe(this, playListList -> {
-                    Log.d("PlayList", playListList.toString());
-                });*/
-
                 for (PlaylistSimple aPlayList : playlistSimplePager.items){
                     Playlist p = new Playlist(aPlayList.id, aPlayList.name);
-                    playListListTemp.add(p);
+                    p.loadMusics(getId(),new UserListeners() {
+                        @Override
+                        public void onPlayListReady() {
+                            playListListTemp.add(p);
+                            playListList.setValue(playListListTemp);
+                        }
+                    });
                 }
-
-               playListList.setValue(playListListTemp);
-
             }
         });
     }
