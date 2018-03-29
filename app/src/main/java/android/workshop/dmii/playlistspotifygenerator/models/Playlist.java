@@ -8,15 +8,15 @@ import java.util.ArrayList;
  */
 
 public class Playlist {
-    private int id;
+    private String id;
     private ArrayList<Music> musicList;
     private String name;
 
-    public Playlist(int id) {
+    public Playlist(String id) {
         this.id = id;
     }
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 

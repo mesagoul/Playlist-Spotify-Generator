@@ -1,5 +1,6 @@
 package android.workshop.dmii.playlistspotifygenerator.fragments;
 
+import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -14,8 +15,10 @@ import android.widget.Toast;
 import android.workshop.dmii.playlistspotifygenerator.R;
 import android.workshop.dmii.playlistspotifygenerator.adapters.ImageAdapter;
 import android.workshop.dmii.playlistspotifygenerator.models.Playlist;
+import android.workshop.dmii.playlistspotifygenerator.models.User;
 import android.workshop.dmii.playlistspotifygenerator.network.SpotifyApiWrapper;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -37,8 +40,7 @@ import retrofit.client.Response;
 public class PlaylistListFragment  extends Fragment{
 
     private GridView listPlaylist;
-    public static final String PLAYLIST_ID_KEY = "PLAYLIST_ID_KEY";
-    //private PlaylistListViewModel playlistModel;
+    private User viewModel;
 
 
     public PlaylistListFragment(){
@@ -60,13 +62,18 @@ public class PlaylistListFragment  extends Fragment{
         listPlaylist = (GridView) view.findViewById(R.id.playlistList);
 
         createGridView();
-        getPlayLists();
     }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        String playlistId = getArguments().getString(PLAYLIST_ID_KEY);
+
+        viewModel = ViewModelProviders.of(this).get(User.class);
+        viewModel.init();
+        viewModel.getPlayListList().observe(this, playListList -> {
+            // TODO ici on à une ListPlaylist
+            Log.d("PlayList", playListList.toString());
+        });
 
 
     }
@@ -81,26 +88,5 @@ public class PlaylistListFragment  extends Fragment{
                         Toast.LENGTH_SHORT).show();
             }
         });
-    }
-
-    private void getPlayLists(){
-        final SpotifyService spotify = SpotifyApiWrapper.getInstance().getService();
-
-        Map<String, Object> options = new HashMap<>();
-        options.put("limit", "30");
-
-        spotify.getMyPlaylists(options, new SpotifyCallback<Pager<PlaylistSimple>>() {
-            @Override
-            public void failure(SpotifyError spotifyError) {
-                // TODO ATTENTION AUX ACCES TOKEN EXPIRED
-                Log.d("PLAYLIST",spotifyError.toString());
-            }
-
-            @Override
-            public void success(Pager<PlaylistSimple> playlistSimplePager, Response response) {
-                Log.d("Playslist", "d");
-            }
-        });
-
     }
 }
