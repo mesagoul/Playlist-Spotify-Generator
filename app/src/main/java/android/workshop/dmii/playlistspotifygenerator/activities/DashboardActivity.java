@@ -8,9 +8,11 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Toast;
 import android.workshop.dmii.playlistspotifygenerator.R;
 import android.workshop.dmii.playlistspotifygenerator.fragments.Playlists.PlaylistListFragment;
@@ -19,17 +21,28 @@ import android.workshop.dmii.playlistspotifygenerator.fragments.Playlists.Playli
  * Created by admin on 06/03/2018.
  */
 
-public class DashboardActivity extends FragmentActivity implements NavigationView.OnNavigationItemSelectedListener{
+public class DashboardActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
 
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
+
+        //((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_dashboard);
 
         // SET TOOLBAR
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
+
 
         // ADD NAVIGATION BAR TO CONTEXT
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);

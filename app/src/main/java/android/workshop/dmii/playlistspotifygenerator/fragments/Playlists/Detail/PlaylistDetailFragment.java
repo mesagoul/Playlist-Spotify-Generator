@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.workshop.dmii.playlistspotifygenerator.R;
+import android.workshop.dmii.playlistspotifygenerator.activities.DashboardActivity;
 import android.workshop.dmii.playlistspotifygenerator.fragments.FragmentPagerView;
 import android.workshop.dmii.playlistspotifygenerator.interfaces.PagerViewListener;
 
@@ -27,6 +28,7 @@ public class PlaylistDetailFragment extends Fragment implements PagerViewListene
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        ((DashboardActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         loadFragmentViewPager();
     }
 
