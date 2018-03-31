@@ -33,7 +33,7 @@ public class User extends ViewModel{
         void onPlayListReady();
     }
 
-    private static volatile User sInstance;
+    public static final User userInstance = new User();
 
     private String id;
     private String name;
@@ -44,19 +44,11 @@ public class User extends ViewModel{
     private SpotifyService spotify;
 
     public User() {
-        if (sInstance != null) {
-            throw new RuntimeException("Use getInstance()");
-        }
         spotify = SpotifyApiWrapper.getInstance().getService();
     }
 
     public static User getInstance() {
-        if (sInstance == null) {
-            synchronized (User.class) {
-                if (sInstance == null) sInstance = new User();
-            }
-        }
-        return sInstance;
+        return userInstance;
     }
 
 

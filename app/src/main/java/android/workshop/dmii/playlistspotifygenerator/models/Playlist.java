@@ -34,13 +34,13 @@ public class Playlist extends ViewModel {
     private String name;
     private SpotifyService spotify;
 
-    private UserWrapper user;
+    private User user;
 
 
     public Playlist(String id, String name) {
         this.id = id;
         this.name = name;
-        user = UserWrapper.getInstance();
+        user = User.getInstance();
         spotify = SpotifyApiWrapper.getInstance().getService();
 
     }
@@ -96,7 +96,7 @@ public class Playlist extends ViewModel {
 
         ArrayList<Music> musicListTemp  = new ArrayList<Music>();
 
-        spotify.getPlaylistTracks(user.getUserID(), playListId, new Callback<Pager<PlaylistTrack>>() {
+        spotify.getPlaylistTracks(user.getId(), playListId, new Callback<Pager<PlaylistTrack>>() {
             @Override
             public void success(Pager<PlaylistTrack> playlistTrackPager, Response response) {
 
