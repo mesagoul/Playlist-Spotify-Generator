@@ -16,7 +16,6 @@ import android.workshop.dmii.playlistspotifygenerator.R;
 import android.workshop.dmii.playlistspotifygenerator.animations.ZoomOutPageTransformer;
 import android.workshop.dmii.playlistspotifygenerator.interfaces.PagerViewListener;
 
-
 import java.util.ArrayList;
 
 /**

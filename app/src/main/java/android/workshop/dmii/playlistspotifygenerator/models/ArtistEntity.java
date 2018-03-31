@@ -1,23 +1,42 @@
 package android.workshop.dmii.playlistspotifygenerator.models;
 
+import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.PrimaryKey;
+import android.arch.persistence.room.TypeConverters;
+import android.support.annotation.NonNull;
+import android.workshop.dmii.playlistspotifygenerator.helpers.Converter;
+
 import java.util.ArrayList;
+
+import kaaes.spotify.webapi.android.models.Artist;
 
 /**
  * Created by admin on 21/02/2018.
  */
 
-public class Artist {
+@Entity(tableName = "artist_table")
+public class ArtistEntity {
 
-    private Integer id;
+    @PrimaryKey
+    @NonNull
+    private String id;
+
     private String name;
     private ArrayList<Album> albumList;
     private Integer listOfMusic;
 
-    public Artist(Integer id) {
-        this.id = id;
+    public ArtistEntity(){}
+
+    public ArtistEntity(Artist artist) {
+        setId(artist.id);
+        setName(artist.name);
     }
 
-    public Integer getId() {
+
+    public void setId(String id) {
+        this.id = id;
+    }
+    public String getId() {
         return id;
     }
     public String getName() {
