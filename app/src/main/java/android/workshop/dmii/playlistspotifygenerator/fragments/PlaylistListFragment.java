@@ -16,6 +16,7 @@ import android.workshop.dmii.playlistspotifygenerator.R;
 import android.workshop.dmii.playlistspotifygenerator.adapters.ImageAdapter;
 import android.workshop.dmii.playlistspotifygenerator.models.Playlist;
 import android.workshop.dmii.playlistspotifygenerator.models.User;
+import android.workshop.dmii.playlistspotifygenerator.models.UserWrapper;
 import android.workshop.dmii.playlistspotifygenerator.network.SpotifyApiWrapper;
 
 import java.util.ArrayList;
@@ -41,6 +42,7 @@ public class PlaylistListFragment  extends Fragment{
 
     private GridView listPlaylist;
     private User viewModel;
+    private UserWrapper user;
 
 
     public PlaylistListFragment(){
@@ -70,11 +72,10 @@ public class PlaylistListFragment  extends Fragment{
 
         viewModel = ViewModelProviders.of(this).get(User.class);
         viewModel.loadUser();
-        viewModel.getPlayListList().observe(this, playListList -> {
+        user.getPlayListList().observe(this, playListList -> {
             // TODO ici on à une ListPlaylist
             Log.d("PlayList", playListList.toString());
         });
-
 
     }
 

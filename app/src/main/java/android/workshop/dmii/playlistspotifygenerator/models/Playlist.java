@@ -34,16 +34,19 @@ public class Playlist extends ViewModel {
     private String name;
     private SpotifyService spotify;
 
+    private UserWrapper user;
+
 
     public Playlist(String id, String name) {
         this.id = id;
         this.name = name;
+        user = UserWrapper.getInstance();
         spotify = SpotifyApiWrapper.getInstance().getService();
 
     }
 
-    public void loadMusics(String userId, User.UserListeners listeners){
-        getTracksFromPlayList(this.id, userId, new PlayListListener() {
+    public void loadMusics(User.UserListeners listeners){
+        getTracksFromPlayList(this.id, new PlayListListener() {
             @Override
             public void onTracksLoaded(ArrayList<Music> musicListTemp) {
                 musicList = musicListTemp;
@@ -89,18 +92,25 @@ public class Playlist extends ViewModel {
     public void save(){}
 
 
-    private void getTracksFromPlayList(String playListId, String userId, PlayListListener callBack){
+    private void getTracksFromPlayList(String playListId, PlayListListener callBack){
 
         ArrayList<Music> musicListTemp  = new ArrayList<Music>();
 
-        spotify.getPlaylistTracks(userId, playListId, new Callback<Pager<PlaylistTrack>>() {
+        spotify.getPlaylistTracks(user.getUserID(), playListId, new Callback<Pager<PlaylistTrack>>() {
             @Override
             public void success(Pager<PlaylistTrack> playlistTrackPager, Response response) {
 
                 ArrayList<Music> musicListTemp  = new ArrayList<Music>();
 
                 for (PlaylistTrack aTrack : playlistTrackPager.items){
-                    musicListTemp.add(new Music(aTrack.track.id,aTrack.track.name, aTrack.track.artists.get(0).name, aTrack.track.album.name, aTrack.track.preview_url, (int) aTrack.track.duration_ms));
+                    musicListTemp.add(new Music(
+                        aTrack.track.id,
+                        aTrack.track.name,
+                        aTrack.track.artists.get(0).name,
+                        aTrack.track.album.name,
+                        aTrack.track.preview_url,
+                        (int) aTrack.track.duration_ms)
+                    );
                 }
 
                 callBack.onTracksLoaded(musicListTemp);

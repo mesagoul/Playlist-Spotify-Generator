@@ -6,12 +6,12 @@
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/generate_playlist"
-            android:title="@string/generate_playslit"
+            android:name="@string/generate_playslit"
             />
 
         <item
             android:id="@+id/create_playlist"
-            android:title="@string/create_playlist"
+            android:name="@string/create_playlist"
             />
 
     </group>

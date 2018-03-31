@@ -112,7 +112,7 @@ public class User extends ViewModel{
 
             @Override
             public void failure(RetrofitError error) {
-                Log.d("USER","Eror while trying to get User");
+                Log.d("USER","Error while trying to get User");
             }
         });
 
@@ -136,7 +136,7 @@ public class User extends ViewModel{
 
                 for (PlaylistSimple aPlayList : playlistSimplePager.items){
                     Playlist p = new Playlist(aPlayList.id, aPlayList.name);
-                    p.loadMusics(getId(),new UserListeners() {
+                    p.loadMusics(new UserListeners() {
                         @Override
                         public void onPlayListReady() {
                             playListListTemp.add(p);
