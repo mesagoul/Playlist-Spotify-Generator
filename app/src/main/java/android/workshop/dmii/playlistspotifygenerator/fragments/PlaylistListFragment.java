@@ -14,7 +14,10 @@ import android.widget.GridView;
 import android.widget.Toast;
 import android.workshop.dmii.playlistspotifygenerator.R;
 import android.workshop.dmii.playlistspotifygenerator.adapters.ImageAdapter;
+import android.workshop.dmii.playlistspotifygenerator.models.Playlist;
 import android.workshop.dmii.playlistspotifygenerator.models.User;
+
+import java.util.ArrayList;
 
 /**
  * Created by benja on 21/02/2018.
@@ -24,10 +27,12 @@ public class PlaylistListFragment  extends Fragment{
 
     private GridView listPlaylist;
     private User user;
+    private ArrayList<Playlist> array;
 
     public PlaylistListFragment(){
         //empty constructor
         user =  User.getInstance();
+        array = new ArrayList<Playlist>();
     }
 
     @Nullable
@@ -52,9 +57,10 @@ public class PlaylistListFragment  extends Fragment{
         super.onActivityCreated(savedInstanceState);
 
         user = ViewModelProviders.of(this).get(User.class);
-        user.loadUser();
+        user.loadPlayLists();
         user.getPlayListList().observe(this, playListList -> {
             // TODO ici on à une ListPlaylist
+            array = playListList;
             Log.d("PlayList", playListList.toString());
         });
 

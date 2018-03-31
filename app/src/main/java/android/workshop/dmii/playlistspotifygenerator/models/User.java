@@ -3,8 +3,6 @@ package android.workshop.dmii.playlistspotifygenerator.models;
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.ViewModel;
-import android.arch.lifecycle.ViewModelProviders;
-import android.content.Context;
 import android.util.Log;
 import android.workshop.dmii.playlistspotifygenerator.network.SpotifyApiWrapper;
 
@@ -17,7 +15,6 @@ import kaaes.spotify.webapi.android.SpotifyError;
 import kaaes.spotify.webapi.android.SpotifyService;
 import kaaes.spotify.webapi.android.models.Pager;
 import kaaes.spotify.webapi.android.models.PlaylistSimple;
-import kaaes.spotify.webapi.android.models.PlaylistTrack;
 import kaaes.spotify.webapi.android.models.UserPrivate;
 import retrofit.Callback;
 import retrofit.RetrofitError;
@@ -41,7 +38,7 @@ public class User extends ViewModel{
     private String token;
     private MutableLiveData<ArrayList<Playlist>> playListList = new MutableLiveData<>();
     private ArrayList<Music> MusicList;
-    private SpotifyService spotify;
+    public SpotifyService spotify;
 
     public User() {
         spotify = SpotifyApiWrapper.getInstance().getService();
@@ -90,27 +87,11 @@ public class User extends ViewModel{
         // do something ...
     }
 
-
-    public void loadUser(){
-
-        spotify.getMe(new Callback<UserPrivate>() {
-            @Override
-            public void success(UserPrivate userPrivate, Response response) {
-                id = userPrivate.id;
-                name = userPrivate.display_name;
-
-                loadPlayLists();
-            }
-
-            @Override
-            public void failure(RetrofitError error) {
-                Log.d("USER","Error while trying to get User");
-            }
-        });
-
+    public void setId(String id) {
+        this.id = id;
     }
 
-    private void loadPlayLists(){
+    public void loadPlayLists(){
 
         Map<String, Object> options = new HashMap<>();
         options.put("limit", "30");

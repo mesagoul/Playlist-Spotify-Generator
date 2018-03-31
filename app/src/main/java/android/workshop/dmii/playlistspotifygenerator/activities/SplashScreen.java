@@ -8,17 +8,23 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
 import android.workshop.dmii.playlistspotifygenerator.R;
-import android.workshop.dmii.playlistspotifygenerator.network.SpotifyApiWrapper;
+import android.workshop.dmii.playlistspotifygenerator.helpers.ConnexionHelper;
+import android.workshop.dmii.playlistspotifygenerator.models.User;
 
 import com.spotify.sdk.android.authentication.AuthenticationClient;
 import com.spotify.sdk.android.authentication.AuthenticationRequest;
 import com.spotify.sdk.android.authentication.AuthenticationResponse;
 
+import kaaes.spotify.webapi.android.models.UserPrivate;
+import retrofit.Callback;
+import retrofit.RetrofitError;
+import retrofit.client.Response;
+
 /**
  * Created by benja on 06/03/2018.
  */
 
-public class SplashScreen extends Activity {
+public class SplashScreen extends Activity{
 
     private static final int SPLASH_TIME_OUT = 1500;
     private static final String CLIENT_ID = "c4636ffdc7844503ba3e89d7c4908d66";
@@ -53,11 +59,8 @@ public class SplashScreen extends Activity {
         toLogInActivity = new Intent(SplashScreen.this, LogInActivity.class);
         toRefreshActivity = new Intent(SplashScreen.this, DashboardActivity.class);
 
-
-
         // GET SHARED PREFERENCES
         SharedPreferences sharedPreferences = getBaseContext().getSharedPreferences(AUTH, MODE_PRIVATE);
-
 
         // GET TOKEN
         token = sharedPreferences.getString(TOKEN, null);
@@ -89,23 +92,31 @@ public class SplashScreen extends Activity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        SharedPreferences sharedPreferences = getBaseContext().getSharedPreferences(AUTH, MODE_PRIVATE);
 
         // Check if result comes from the correct activity
         if (requestCode == REQUEST_CODE) {
+
             AuthenticationResponse response = AuthenticationClient.getResponse(resultCode, data);
             if (response.getType() == AuthenticationResponse.Type.TOKEN) {
-                sharedPreferences
-                        .edit()
-                        .putString(TOKEN, response.getAccessToken())
-                        .apply();
 
-                // SET TO SPOTIFY API WRAPPER FOR SESSION
-                SpotifyApiWrapper.getInstance().setToken(token);
+                // Connect to spotify
+                ConnexionHelper.onSpotifyConnect(response, this);
 
-                // GO TO MAIN ACTIVITY
-                startActivity(toRefreshActivity);
-                finish();
+
+                // Get ser informations
+                User.getInstance().spotify.getMe(new Callback<UserPrivate>() {
+                    @Override
+                    public void success(UserPrivate userPrivate, Response response) {
+                        User.getInstance().setId(userPrivate.id);
+                        User.getInstance().setName(userPrivate.display_name);
+                        ConnexionHelper.onGetUserFinished(true, SplashScreen.this, toRefreshActivity);
+                    }
+
+                    @Override
+                    public void failure(RetrofitError error) {
+                        ConnexionHelper.onGetUserFinished(false, SplashScreen.this, toRefreshActivity);
+                    }
+                });
             }
         }
     }

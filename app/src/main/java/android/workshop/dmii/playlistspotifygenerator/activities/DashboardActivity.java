@@ -11,6 +11,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 import android.workshop.dmii.playlistspotifygenerator.R;
+import android.workshop.dmii.playlistspotifygenerator.models.User;
 
 /**
  * Created by admin on 06/03/2018.
