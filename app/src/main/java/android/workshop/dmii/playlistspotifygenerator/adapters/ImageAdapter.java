@@ -1,5 +1,6 @@
 package android.workshop.dmii.playlistspotifygenerator.adapters;
 
+import android.arch.lifecycle.LiveData;
 import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
@@ -7,6 +8,9 @@ import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.workshop.dmii.playlistspotifygenerator.R;
+import android.workshop.dmii.playlistspotifygenerator.models.Playlist;
+
+import java.util.ArrayList;
 
 /**
  * Created by admin on 06/03/2018.
@@ -14,21 +18,31 @@ import android.workshop.dmii.playlistspotifygenerator.R;
 
 public class ImageAdapter extends BaseAdapter {
     private Context mContext;
+    // references to our images
+    private Integer[] mThumbIds = {
+            R.drawable.ic_launcher_background, R.drawable.ic_launcher_background,
+            R.drawable.ic_launcher_background, R.drawable.ic_launcher_background,
+    };
 
-    public ImageAdapter(Context c) {
+    private LiveData<ArrayList<Playlist>> playlistToDisplay;
+
+    public ImageAdapter(Context c, LiveData<ArrayList<Playlist>> playlists) {
         mContext = c;
+        playlistToDisplay = playlists;
     }
 
     public int getCount() {
-        return mThumbIds.length;
+        //return mThumbIds.length;
+        int total = playlistToDisplay.getValue().size();
+        return total;
     }
 
     public Object getItem(int position) {
-        return null;
+        return position;
     }
 
     public long getItemId(int position) {
-        return 0;
+        return position;
     }
 
     // create a new ImageView for each item referenced by the Adapter
@@ -38,7 +52,7 @@ public class ImageAdapter extends BaseAdapter {
             // if it's not recycled, initialize some attributes
             imageView = new ImageView(mContext);
             imageView.setLayoutParams(new GridView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
-            //imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
+            //imageView.setSc*aleType(ImageView.ScaleType.CENTER_CROP);
         } else {
             imageView = (ImageView) convertView;
         }
@@ -46,13 +60,4 @@ public class ImageAdapter extends BaseAdapter {
         imageView.setImageResource(mThumbIds[position]);
         return imageView;
     }
-
-    // references to our images
-    private Integer[] mThumbIds = {
-            R.drawable.ic_launcher_background, R.drawable.ic_launcher_background,
-            R.drawable.ic_launcher_background, R.drawable.ic_launcher_background,
-            R.drawable.ic_launcher_background, R.drawable.ic_launcher_background,
-            R.drawable.ic_launcher_background, R.drawable.ic_launcher_background,
-            R.drawable.ic_launcher_background, R.drawable.ic_launcher_background
-    };
 }

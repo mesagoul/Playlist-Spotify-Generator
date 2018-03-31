@@ -25,7 +25,7 @@ import java.util.ArrayList;
 
 public class PlaylistListFragment  extends Fragment{
 
-    private GridView listPlaylist;
+    private GridView playlistGrid;
     private User user;
     private ArrayList<Playlist> array;
 
@@ -47,9 +47,7 @@ public class PlaylistListFragment  extends Fragment{
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        listPlaylist = (GridView) view.findViewById(R.id.playlistList);
-
-        createGridView();
+        playlistGrid = (GridView) view.findViewById(R.id.playlistList);
     }
 
     @Override
@@ -62,18 +60,18 @@ public class PlaylistListFragment  extends Fragment{
             // TODO ici on à une ListPlaylist
             array = playListList;
             Log.d("PlayList", playListList.toString());
+            createGridView();
         });
 
     }
 
-    private void createGridView(){
-        listPlaylist.setAdapter(new ImageAdapter(this.getContext()));
+    public void createGridView(){
+        playlistGrid.setAdapter(new ImageAdapter(this.getContext(), user.getPlayListList()));
 
-        listPlaylist.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            public void onItemClick(AdapterView<?> parent, View v,
-                                    int position, long id) {
-                Toast.makeText(getContext(), "" + position,
-                        Toast.LENGTH_SHORT).show();
+        playlistGrid.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
+
+                Toast.makeText(getContext(), "playlist " + position, Toast.LENGTH_SHORT).show();
             }
         });
     }
