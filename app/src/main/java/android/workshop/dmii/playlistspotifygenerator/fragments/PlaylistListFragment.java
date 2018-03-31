@@ -27,12 +27,10 @@ public class PlaylistListFragment  extends Fragment{
 
     private GridView playlistGrid;
     private User user;
-    private ArrayList<Playlist> array;
 
     public PlaylistListFragment(){
         //empty constructor
         user =  User.getInstance();
-        array = new ArrayList<Playlist>();
     }
 
     @Nullable
@@ -54,19 +52,16 @@ public class PlaylistListFragment  extends Fragment{
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        user = ViewModelProviders.of(this).get(User.class);
+        user = ViewModelProviders.of(this).get(User.getInstance().getClass());
         user.loadPlayLists();
         user.getPlayListList().observe(this, playListList -> {
-            // TODO ici on à une ListPlaylist
-            array = playListList;
-            Log.d("PlayList", playListList.toString());
-            createGridView();
+            createGridView(playListList);
         });
 
     }
 
-    public void createGridView(){
-        playlistGrid.setAdapter(new ImageAdapter(this.getContext(), user.getPlayListList()));
+    public void createGridView(ArrayList<Playlist> playListList){
+        playlistGrid.setAdapter(new ImageAdapter(this.getContext(), playListList));
 
         playlistGrid.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View v, int position, long id) {

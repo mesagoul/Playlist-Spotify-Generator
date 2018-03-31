@@ -10,6 +10,7 @@ import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 import kaaes.spotify.webapi.android.SpotifyService;
+import kaaes.spotify.webapi.android.models.Image;
 import kaaes.spotify.webapi.android.models.Pager;
 import kaaes.spotify.webapi.android.models.PlaylistSimple;
 import kaaes.spotify.webapi.android.models.PlaylistTrack;
@@ -32,14 +33,15 @@ public class Playlist extends ViewModel {
     private String id;
     private ArrayList<Music> musicList;
     private String name;
+    private String imageUrl;
     private SpotifyService spotify;
 
 
-    public Playlist(String id, String name) {
+    public Playlist(String id, String name, String imageUrl) {
         this.id = id;
         this.name = name;
+        this.imageUrl = imageUrl;
         spotify = SpotifyApiWrapper.getInstance().getService();
-
     }
 
     public void loadMusics(User.UserListeners listeners){

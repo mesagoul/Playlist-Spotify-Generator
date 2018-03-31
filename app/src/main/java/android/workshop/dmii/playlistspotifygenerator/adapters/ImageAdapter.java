@@ -24,16 +24,16 @@ public class ImageAdapter extends BaseAdapter {
             R.drawable.ic_launcher_background, R.drawable.ic_launcher_background,
     };
 
-    private LiveData<ArrayList<Playlist>> playlistToDisplay;
+    private ArrayList<Playlist> playlistToDisplay;
 
-    public ImageAdapter(Context c, LiveData<ArrayList<Playlist>> playlists) {
+    public ImageAdapter(Context c,ArrayList<Playlist> playlists) {
         mContext = c;
         playlistToDisplay = playlists;
     }
 
     public int getCount() {
         //return mThumbIds.length;
-        int total = playlistToDisplay.getValue().size();
+        int total = playlistToDisplay.size();
         return total;
     }
 

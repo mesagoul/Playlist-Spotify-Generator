@@ -109,7 +109,7 @@ public class User extends ViewModel{
                 ArrayList<Playlist> playListListTemp = new ArrayList<Playlist>();
 
                 for (PlaylistSimple aPlayList : playlistSimplePager.items){
-                    Playlist p = new Playlist(aPlayList.id, aPlayList.name);
+                    Playlist p = new Playlist(aPlayList.id, aPlayList.name, aPlayList.images.get(0).url);
                     p.loadMusics(new UserListeners() {
                         @Override
                         public void onPlayListReady() {
@@ -118,7 +118,6 @@ public class User extends ViewModel{
                         }
                     });
                 }
-
             }
         });
     }
