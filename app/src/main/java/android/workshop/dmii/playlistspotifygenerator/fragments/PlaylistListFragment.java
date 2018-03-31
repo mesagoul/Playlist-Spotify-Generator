@@ -64,9 +64,10 @@ public class PlaylistListFragment  extends Fragment{
         playlistGrid.setAdapter(new ImageAdapter(this.getContext(), playListList));
 
         playlistGrid.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
             public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
 
-                Toast.makeText(getContext(), "playlist " + position, Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), "playlist " + playListList.get(position).getName(), Toast.LENGTH_SHORT).show();
             }
         });
     }

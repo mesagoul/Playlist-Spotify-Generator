@@ -38,7 +38,7 @@ public class ImageAdapter extends BaseAdapter {
     }
 
     public Object getItem(int position) {
-        return position;
+        return playlistToDisplay.get(position);
     }
 
     public long getItemId(int position) {
