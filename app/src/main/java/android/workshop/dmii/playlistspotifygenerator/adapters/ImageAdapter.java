@@ -2,13 +2,18 @@ package android.workshop.dmii.playlistspotifygenerator.adapters;
 
 import android.arch.lifecycle.LiveData;
 import android.content.Context;
+import android.content.Intent;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.ImageView;
+import android.widget.Toast;
 import android.workshop.dmii.playlistspotifygenerator.R;
 import android.workshop.dmii.playlistspotifygenerator.models.Playlist;
+
+import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
 
@@ -52,12 +57,21 @@ public class ImageAdapter extends BaseAdapter {
             // if it's not recycled, initialize some attributes
             imageView = new ImageView(mContext);
             imageView.setLayoutParams(new GridView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
-            //imageView.setSc*aleType(ImageView.ScaleType.CENTER_CROP);
+            //imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
         } else {
             imageView = (ImageView) convertView;
         }
 
+        Playlist currentPlaylist = playlistToDisplay.get(position);
+
+        Glide.with(mContext)
+            .load(currentPlaylist.getImageUrl())
+            //.centerCrop()
+            //.crossFade()
+            .into(imageView);
+
         imageView.setImageResource(mThumbIds[position]);
+
         return imageView;
     }
 }

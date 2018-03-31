@@ -90,6 +90,9 @@ public class Playlist extends ViewModel {
 
     public void save(){}
 
+    public String getImageUrl() {
+        return imageUrl;
+    }
 
     private void getTracksFromPlayList(String playListId, PlayListListener callBack){
 
