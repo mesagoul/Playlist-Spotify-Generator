@@ -5,4 +5,6 @@
     <string name="splash_logo">SplashScreen Logo</string>
     <string name="generate_playslit">Générer Playlist</string>
     <string name="create_playlist">Créer Playlist</string>
+    <string name="tracks">Musiques</string>
+    <string name="artists">Artistes</string>
 </resources>

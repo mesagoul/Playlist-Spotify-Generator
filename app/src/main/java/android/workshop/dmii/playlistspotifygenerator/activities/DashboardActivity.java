@@ -3,21 +3,23 @@ package android.workshop.dmii.playlistspotifygenerator.activities;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 import android.workshop.dmii.playlistspotifygenerator.R;
-import android.workshop.dmii.playlistspotifygenerator.models.User;
+import android.workshop.dmii.playlistspotifygenerator.fragments.Playlists.PlaylistListFragment;
 
 /**
  * Created by admin on 06/03/2018.
  */
 
-public class DashboardActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
+public class DashboardActivity extends FragmentActivity implements NavigationView.OnNavigationItemSelectedListener{
 
 
     @Override
@@ -28,22 +30,19 @@ public class DashboardActivity extends AppCompatActivity implements NavigationVi
 
         // SET TOOLBAR
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
 
         // ADD NAVIGATION BAR TO CONTEXT
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        loadNewFragment(new PlaylistListFragment(), false, true);
     }
 
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             return true;
         }
@@ -74,5 +73,20 @@ public class DashboardActivity extends AppCompatActivity implements NavigationVi
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
+    }
+
+    // load new fragment to show in activity
+    public void loadNewFragment(Fragment newFragment , boolean isCloseFragment, boolean isFirstFragment){
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        ft.replace(R.id.frame_layout, newFragment);
+        if(!isFirstFragment){
+            if(isCloseFragment){
+                ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_CLOSE);
+            }else{
+                ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+            }
+        }
+        ft.addToBackStack(null);
+        ft.commit();
     }
 }

@@ -1,11 +1,10 @@
-package android.workshop.dmii.playlistspotifygenerator.fragments;
+package android.workshop.dmii.playlistspotifygenerator.fragments.Playlists;
 
 import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,7 +12,9 @@ import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.Toast;
 import android.workshop.dmii.playlistspotifygenerator.R;
+import android.workshop.dmii.playlistspotifygenerator.activities.DashboardActivity;
 import android.workshop.dmii.playlistspotifygenerator.adapters.ImageAdapter;
+import android.workshop.dmii.playlistspotifygenerator.fragments.Playlists.Detail.PlaylistDetailFragment;
 import android.workshop.dmii.playlistspotifygenerator.models.Playlist;
 import android.workshop.dmii.playlistspotifygenerator.models.User;
 
@@ -66,8 +67,9 @@ public class PlaylistListFragment  extends Fragment{
         playlistGrid.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
             public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
-
                 Toast.makeText(getContext(), "playlist " + playListList.get(position).getName(), Toast.LENGTH_SHORT).show();
+                ((DashboardActivity)getActivity()).loadNewFragment(new PlaylistDetailFragment(), false,false);
+
             }
         });
     }
