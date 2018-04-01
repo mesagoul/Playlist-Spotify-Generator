@@ -48,7 +48,7 @@ public class CreatePlaylistFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         Map<String, Object> options = new HashMap<>();
-        options.put("Authorization", "user-library-read");
+        options.put("Scope", "user-library-read");
 
         spotify.getMySavedTracks(options, new SpotifyCallback<Pager<SavedTrack>>() {
             @Override

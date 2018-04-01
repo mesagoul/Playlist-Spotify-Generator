@@ -16,6 +16,7 @@ import com.spotify.sdk.android.authentication.AuthenticationRequest;
 import com.spotify.sdk.android.authentication.AuthenticationResponse;
 
 import kaaes.spotify.webapi.android.SpotifyApi;
+import kaaes.spotify.webapi.android.SpotifyService;
 import kaaes.spotify.webapi.android.models.UserPrivate;
 import retrofit.Callback;
 import retrofit.RequestInterceptor;
@@ -87,7 +88,7 @@ public class SplashScreen extends Activity{
 
     public void loadAuthClient(){
         builder  = new AuthenticationRequest.Builder(CLIENT_ID, AuthenticationResponse.Type.TOKEN, REDIRECT_URI);
-        builder.setScopes(new String[]{"streaming"});
+        builder.setScopes(new String[]{"streaming", "user-library-read"});
         request = builder.build();
     }
 
@@ -118,8 +119,8 @@ public class SplashScreen extends Activity{
                                 .setRequestInterceptor(new RequestInterceptor() {
                                     @Override
                                     public void intercept(RequestFacade request) {
-                                        request.addHeader("Authorization", "Bearer " + token);
-
+                                        //request.addHeader("Authorization", "Bearer " + token);
+                                        request.addHeader("scope", "user-library-read");
                                     }
                                 })
                                 .build();
