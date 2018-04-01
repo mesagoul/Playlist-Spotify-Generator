@@ -15,6 +15,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 import android.workshop.dmii.playlistspotifygenerator.R;
+import android.workshop.dmii.playlistspotifygenerator.fragments.Playlists.CreatePlaylistFragment;
+import android.workshop.dmii.playlistspotifygenerator.fragments.Playlists.GeneratePlaylistFragment;
 import android.workshop.dmii.playlistspotifygenerator.fragments.Playlists.PlaylistListFragment;
 
 /**
@@ -69,9 +71,9 @@ public class DashboardActivity extends AppCompatActivity implements NavigationVi
         int id = item.getItemId();
 
         if(id == R.id.create_playlist){
-            Toast.makeText(this, "create playslit", Toast.LENGTH_SHORT).show();
+            loadNewFragment(new CreatePlaylistFragment(), false, true);
         }else if(id == R.id.generate_playlist){
-            Toast.makeText(this, "generate playslit", Toast.LENGTH_SHORT).show();
+            loadNewFragment(new GeneratePlaylistFragment(), false, true);
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
