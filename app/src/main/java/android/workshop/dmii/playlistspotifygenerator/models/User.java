@@ -104,13 +104,18 @@ public class User extends ViewModel{
 
                 ArrayList<Playlist> playListListTemp = new ArrayList<Playlist>();
 
-                for (PlaylistSimple aPlayList : playlistSimplePager.items){
+                for(int i = 0 ; i < playlistSimplePager.total ; i++){
+                    final int cpt = i;
+                    PlaylistSimple aPlayList = playlistSimplePager.items.get(i);
                     Playlist p = new Playlist(aPlayList.id, aPlayList.name, aPlayList.images.get(0).url);
                     p.loadMusics(new UserListeners() {
                         @Override
                         public void onPlayListReady() {
                             playListListTemp.add(p);
-                            playListList.setValue(playListListTemp);
+
+                            if( cpt == playlistSimplePager.total -1){
+                                playListList.setValue(playListListTemp);
+                            }
                         }
                     });
                 }
