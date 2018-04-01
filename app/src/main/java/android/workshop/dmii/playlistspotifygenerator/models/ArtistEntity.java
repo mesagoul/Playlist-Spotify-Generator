@@ -7,6 +7,7 @@ import android.support.annotation.NonNull;
 import android.workshop.dmii.playlistspotifygenerator.helpers.Converter;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import kaaes.spotify.webapi.android.models.Artist;
 
@@ -15,6 +16,7 @@ import kaaes.spotify.webapi.android.models.Artist;
  */
 
 @Entity(tableName = "artist_table")
+@TypeConverters({Converter.class})
 public class ArtistEntity {
 
     @PrimaryKey
@@ -22,7 +24,8 @@ public class ArtistEntity {
     private String id;
 
     private String name;
-    private ArrayList<Album> albumList;
+
+    private List<Album> albumList;
     private Integer listOfMusic;
 
     public ArtistEntity(){}
@@ -45,7 +48,7 @@ public class ArtistEntity {
     public void setName(String name) {
         this.name = name;
     }
-    public ArrayList<Album> getAlbumList() {
+    public List<Album> getAlbumList() {
         return albumList;
     }
     public void setAlbumList(ArrayList<Album> albumList) {

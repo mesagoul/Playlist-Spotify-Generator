@@ -8,13 +8,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.workshop.dmii.playlistspotifygenerator.R;
-import android.workshop.dmii.playlistspotifygenerator.models.Artist;
+import android.workshop.dmii.playlistspotifygenerator.models.ArtistEntity;
 
 import java.util.ArrayList;
 
 public class PlaylistDetailArtistsFragment extends Fragment {
 
-    public ArrayList<Artist> listArtist;
+    public ArrayList<ArtistEntity> listArtist;
 
     @Nullable
     @Override
