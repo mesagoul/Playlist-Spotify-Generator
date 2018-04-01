@@ -15,8 +15,11 @@ import com.spotify.sdk.android.authentication.AuthenticationClient;
 import com.spotify.sdk.android.authentication.AuthenticationRequest;
 import com.spotify.sdk.android.authentication.AuthenticationResponse;
 
+import kaaes.spotify.webapi.android.SpotifyApi;
 import kaaes.spotify.webapi.android.models.UserPrivate;
 import retrofit.Callback;
+import retrofit.RequestInterceptor;
+import retrofit.RestAdapter;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
 
@@ -109,6 +112,17 @@ public class SplashScreen extends Activity{
                     public void success(UserPrivate userPrivate, Response response) {
                         User.getInstance().setId(userPrivate.id);
                         User.getInstance().setName(userPrivate.display_name);
+
+                        RestAdapter restAdapter = new RestAdapter.Builder()
+                                .setEndpoint(SpotifyApi.SPOTIFY_WEB_API_ENDPOINT)
+                                .setRequestInterceptor(new RequestInterceptor() {
+                                    @Override
+                                    public void intercept(RequestFacade request) {
+                                        request.addHeader("Authorization", "Bearer " + token);
+
+                                    }
+                                })
+                                .build();
                         ConnexionHelper.onGetUserFinished(true, SplashScreen.this, toRefreshActivity);
                     }
 
