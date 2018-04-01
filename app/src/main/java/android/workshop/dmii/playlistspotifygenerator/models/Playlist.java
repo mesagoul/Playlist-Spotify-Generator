@@ -54,6 +54,19 @@ public class Playlist extends ViewModel {
         });
     }
 
+    public ArrayList<Artist> getArtist(){
+
+        ArrayList<Artist> artists = new ArrayList<Artist>();
+
+        for (Music aMusic: musicList){
+            for (Artist anArtist: aMusic.getArtist()){
+                artists.add(anArtist);
+            }
+        }
+
+        return artists;
+    }
+
     /*public ArrayList<Music> convertTracks(ArrayList tracks) {
 
         ArrayList<Music> musicListTemp = new ArrayList<Music>();
@@ -108,7 +121,7 @@ public class Playlist extends ViewModel {
                     musicListTemp.add(new Music(
                         aTrack.track.id,
                         aTrack.track.name,
-                        aTrack.track.artists.get(0).name,
+                        aTrack.track.artists,
                         aTrack.track.album.name,
                         aTrack.track.preview_url,
                         (int) aTrack.track.duration_ms)

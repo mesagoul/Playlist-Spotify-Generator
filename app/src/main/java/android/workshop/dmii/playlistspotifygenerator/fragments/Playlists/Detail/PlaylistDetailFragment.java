@@ -39,7 +39,7 @@ public class PlaylistDetailFragment extends Fragment implements PagerViewListene
     public ArrayList<Fragment> initFragmentsForPagerView() {
         ArrayList<Fragment> listFragments = new ArrayList<Fragment>();
         PlaylistDetailArtistsFragment playlistDetailArtistsFragment = new PlaylistDetailArtistsFragment();
-        //playlistDetailArtistsFragment.listArtist = currentPlaylist.get
+        playlistDetailArtistsFragment.listArtist = currentPlaylist.getArtist();
         PlaylistDetailTracksFragment playlistDetailTracksFragment = new PlaylistDetailTracksFragment();
         playlistDetailTracksFragment.dataListMusic = currentPlaylist.getMusicList();
         listFragments.add(playlistDetailArtistsFragment);

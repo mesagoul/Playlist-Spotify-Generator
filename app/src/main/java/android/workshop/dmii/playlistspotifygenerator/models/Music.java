@@ -1,6 +1,9 @@
 package android.workshop.dmii.playlistspotifygenerator.models;
 
 import java.util.ArrayList;
+import java.util.List;
+
+import kaaes.spotify.webapi.android.models.ArtistSimple;
 
 /**
  * Created by benja on 21/02/2018.
@@ -14,18 +17,30 @@ public class Music {
     private Integer score;
     private String url;
     private ArrayList<Genre> genreList;
-    private String artist;
+    private ArrayList<Artist> artistsList;
     private String albumName;
 
 
-    public Music(String id, String name, String artist, String albumName, String url, Integer duration) {
+    public Music(String id, String name, List<ArtistSimple> artists, String albumName, String url, Integer duration) {
         this.id = id;
         this.name = name;
-        this.artist = artist;
+        this.artistsList = convertArtists(artists);
         this.albumName = albumName;
         this.url = url;
         this.duration = duration;
 
+    }
+
+    public ArrayList<Artist> convertArtists(List<ArtistSimple> list){
+        ArrayList<Artist> listTemp = new ArrayList<Artist>();
+
+        for(ArtistSimple anArtist : list){
+            listTemp.add(new Artist(
+                    anArtist.id,
+                    anArtist.name
+            ));
+        }
+        return listTemp;
     }
 
 
@@ -67,14 +82,9 @@ public class Music {
         this.genreList = genreList;
     }
 
-    public String getArtist() {
-        return artist;
+    public ArrayList<Artist> getArtist() {
+        return artistsList;
     }
-
-    public void setArtist(String artist) {
-        this.artist = artist;
-    }
-
 
     public void play(){
 
