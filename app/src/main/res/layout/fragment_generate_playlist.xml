@@ -5,38 +5,39 @@
     android:orientation="vertical"
     tools:context="android.workshop.dmii.playlistspotifygenerator.fragments.Playlists.CreatePlaylistFragment">
 
-    <Spinner
-        android:id="@+id/spinner"
-        android:layout_width="match_parent"
-        android:layout_height="47dp"
-        />
-
     <EditText
-        android:id="@+id/style"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:inputType="textPersonName"
-        android:text="@string/genre" />
-
-    <EditText
-        android:id="@+id/editText2"
+        android:id="@+id/playlist_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
         android:inputType="textPersonName"
         android:text="@string/nom" />
 
+    <Spinner
+        android:id="@+id/genre_list"
+        android:layout_width="match_parent"
+        android:layout_height="47dp"
+        />
+
     <EditText
-        android:id="@+id/editText3"
+        android:id="@+id/songname_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
         android:inputType="textPersonName"
         android:text="@string/chanson" />
 
+
+    <EditText
+        android:id="@+id/artist_name_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:text="@string/artist"/>
+
     <Button
-        android:id="@+id/button"
+        android:id="@+id/generate_btn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/generate" />

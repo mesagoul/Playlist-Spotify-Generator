@@ -6,7 +6,7 @@
     tools:context="android.workshop.dmii.playlistspotifygenerator.fragments.Playlists.CreatePlaylistFragment">
 
     <EditText
-        android:id="@+id/editText"
+        android:id="@+id/playlist_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
@@ -19,7 +19,7 @@
         android:layout_height="317dp" />
 
     <Button
-        android:id="@+id/button"
+        android:id="@+id/createplayslist_btn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/create" />

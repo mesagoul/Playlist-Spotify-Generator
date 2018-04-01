@@ -18,7 +18,6 @@ public class CreatePlaylistFragment extends Fragment {
     private User user;
 
     public CreatePlaylistFragment() {
-        // Required empty public constructor
         user = User.getInstance();
     }
 
