@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/colorPrimary"
+    android:padding="15dp"
+    android:layout_margin="10dp"
+    android:layout_marginBottom="0dp">
+
+    <TextView
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:textColor="@color/colorLight"
+        android:textAlignment="center"
+        android:id="@+id/item_id"
+        android:layout_width="0dp"
+        android:layout_weight="10"
+        android:layout_height="match_parent"
+        />
+
+    <TextView
+        android:maxLines="1"
+        android:ellipsize="end"
+        android:textColor="@color/colorLight"
+        android:layout_gravity="center"
+        android:gravity="center|start"
+        android:id="@+id/item_title"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="80"/>
+
+    <LinearLayout
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="10">
+        <Button
+            android:layout_gravity="center"
+            android:id="@+id/item_delete"
+            android:layout_width="15dp"
+            android:layout_height="15dp"
+            android:backgroundTint="@color/colorLight"
+            android:background="@drawable/multiply"
+            />
+
+    </LinearLayout>
+
+</LinearLayout>

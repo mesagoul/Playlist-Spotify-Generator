@@ -13,10 +13,13 @@ import android.workshop.dmii.playlistspotifygenerator.R;
 import android.workshop.dmii.playlistspotifygenerator.activities.DashboardActivity;
 import android.workshop.dmii.playlistspotifygenerator.fragments.FragmentPagerView;
 import android.workshop.dmii.playlistspotifygenerator.interfaces.PagerViewListener;
+import android.workshop.dmii.playlistspotifygenerator.models.Playlist;
 
 import java.util.ArrayList;
 
 public class PlaylistDetailFragment extends Fragment implements PagerViewListener {
+
+    public Playlist currentPlaylist;
 
     @Nullable
     @Override
@@ -36,7 +39,9 @@ public class PlaylistDetailFragment extends Fragment implements PagerViewListene
     public ArrayList<Fragment> initFragmentsForPagerView() {
         ArrayList<Fragment> listFragments = new ArrayList<Fragment>();
         PlaylistDetailArtistsFragment playlistDetailArtistsFragment = new PlaylistDetailArtistsFragment();
+        //playlistDetailArtistsFragment.listArtist = currentPlaylist.get
         PlaylistDetailTracksFragment playlistDetailTracksFragment = new PlaylistDetailTracksFragment();
+        playlistDetailTracksFragment.dataListMusic = currentPlaylist.getMusicList();
         listFragments.add(playlistDetailArtistsFragment);
         listFragments.add(playlistDetailTracksFragment);
         return listFragments;
