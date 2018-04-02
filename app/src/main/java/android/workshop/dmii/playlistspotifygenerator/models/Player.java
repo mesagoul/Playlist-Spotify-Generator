@@ -13,6 +13,7 @@ public class Player {
     private Music currentMusic;
     public boolean canSendCommand;
     public MediaPlayer mediaPlayer;
+    //TODO : gérer le prev/next si on lance une playlist et gérer la playlist
 
 
     public static final Player playerInstance = new Player();
