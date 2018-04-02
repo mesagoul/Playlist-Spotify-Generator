@@ -33,6 +33,10 @@ public class Music {
 
     }
 
+    public String getUrl(){
+        return this.url;
+    }
+
     public String getUri(){
         return this.uri;
     }

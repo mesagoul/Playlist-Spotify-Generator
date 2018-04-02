@@ -1,6 +1,10 @@
 package android.workshop.dmii.playlistspotifygenerator.fragments;
 
+import android.media.AudioManager;
+import android.media.MediaPlayer;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Parcel;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -10,10 +14,14 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.Toast;
 import android.workshop.dmii.playlistspotifygenerator.R;
+import android.workshop.dmii.playlistspotifygenerator.models.Music;
+import android.workshop.dmii.playlistspotifygenerator.models.Player;
 import android.workshop.dmii.playlistspotifygenerator.models.User;
 import android.workshop.dmii.playlistspotifygenerator.network.SpotifyApiWrapper;
 
+import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import kaaes.spotify.webapi.android.SpotifyService;
@@ -33,6 +41,10 @@ public class PlayerFragment extends Fragment {
     private Button btn_next;
     private SpotifyService spotify;
     private User user;
+    private MediaPlayer mediaPlayer;
+    private boolean canSendCommand;
+    private Music currentMusic;
+    private Player player;
 
     public  PlayerFragment(){
         // empty constructor;
@@ -49,8 +61,7 @@ public class PlayerFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        user = User.getInstance();
-        spotify = SpotifyApiWrapper.getInstance().getService();
+        player = Player.getInstance();
 
         btn_next = view.findViewById(R.id.player_next_btn);
         btn_play = view.findViewById(R.id.player_play_btn);
@@ -67,6 +78,14 @@ public class PlayerFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Toast.makeText(getContext(), "Play", Toast.LENGTH_SHORT).show();
+
+                if(player.canSendCommand){
+                    if(player.mediaPlayer.isPlaying()){
+                        player.mediaPlayer.pause();
+                    }else{
+                        player.mediaPlayer.start();
+                    }
+                }
             }
         });
 

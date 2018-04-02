@@ -15,6 +15,7 @@ import android.widget.Toast;
 import android.workshop.dmii.playlistspotifygenerator.R;
 import android.workshop.dmii.playlistspotifygenerator.adapters.MusiclistAdapter;
 import android.workshop.dmii.playlistspotifygenerator.models.Music;
+import android.workshop.dmii.playlistspotifygenerator.models.Player;
 import android.workshop.dmii.playlistspotifygenerator.models.Playlist;
 
 import java.util.ArrayList;
@@ -49,8 +50,15 @@ public class PlaylistDetailTracksFragment extends Fragment implements MusiclistA
 
     }
 
+
+
     @Override
-    public void onItemClick(int position, LinearLayout music_container, ArrayList<Music> listMusic) {
+    public void onItemClick(int position) {
+        Player.getInstance().setCurrentMusic(dataListMusic.get(position));
+    }
+
+    @Override
+    public void onCrossClick(int position, LinearLayout music_container, ArrayList<Music> listMusic) {
         currentPlayList.deleteTrackFromPlayList(dataListMusic.get(position).getUri(), new Playlist.PlayListDeleteListener() {
             @Override
             public void onTrackDeleted(boolean success) {

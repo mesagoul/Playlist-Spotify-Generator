@@ -87,22 +87,6 @@ public class CreatePlaylistFragment extends Fragment implements MusiclistAdapter
         super.onActivityCreated(savedInstanceState);
     }
 
-    @Override
-    public void onItemClick(int position, LinearLayout music_container, ArrayList<Music> listMusic) {
-
-        if(listPositionsChecked.contains(position)){
-
-            int posItem = listPositionsChecked.indexOf(position);
-            listPositionsChecked.remove(posItem);
-
-            music_container.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
-
-        }else{
-            listPositionsChecked.add(position);
-            music_container.setBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
-        }
-
-    }
 
     private void createPlaylist(String name){
 
@@ -176,5 +160,23 @@ public class CreatePlaylistFragment extends Fragment implements MusiclistAdapter
         MusiclistAdapter musiclistAdapter = new MusiclistAdapter(tempList, true);
         uiListView.setAdapter(musiclistAdapter);
         musiclistAdapter.setListener(this);
+    }
+
+    @Override
+    public void onItemClick(int position) {}
+
+    @Override
+    public void onCrossClick(int position, LinearLayout music_container, ArrayList<Music> listMusic) {
+        if(listPositionsChecked.contains(position)){
+
+            int posItem = listPositionsChecked.indexOf(position);
+            listPositionsChecked.remove(posItem);
+
+            music_container.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+
+        }else{
+            listPositionsChecked.add(position);
+            music_container.setBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
+        }
     }
 }
