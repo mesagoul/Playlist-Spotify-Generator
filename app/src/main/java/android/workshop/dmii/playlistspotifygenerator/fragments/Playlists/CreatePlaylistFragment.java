@@ -83,6 +83,27 @@ public class CreatePlaylistFragment extends Fragment implements MusiclistAdapter
 
         getSavedTracks();
     }
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+    }
+
+    @Override
+    public void onItemClick(int position, LinearLayout music_container) {
+
+        if(listPositionsChecked.contains(position)){
+
+            int posItem = listPositionsChecked.indexOf(position);
+            listPositionsChecked.remove(posItem);
+
+            music_container.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+
+        }else{
+            listPositionsChecked.add(position);
+            music_container.setBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
+        }
+
+    }
 
     private void createPlaylist(String name){
 
@@ -104,8 +125,6 @@ public class CreatePlaylistFragment extends Fragment implements MusiclistAdapter
             }
         });
     }
-
-
 
     private void saveTracksIntoPlayList(String playListId){
 
@@ -138,14 +157,7 @@ public class CreatePlaylistFragment extends Fragment implements MusiclistAdapter
 
     }
 
-
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-    }
-
-
-    void getSavedTracks(){
+    private void getSavedTracks(){
 
         Map<String, Object> options = new HashMap<>();
 
@@ -184,22 +196,5 @@ public class CreatePlaylistFragment extends Fragment implements MusiclistAdapter
         MusiclistAdapter musiclistAdapter = new MusiclistAdapter(tempList, true);
         uiListView.setAdapter(musiclistAdapter);
         musiclistAdapter.setListener(this);
-    }
-
-    @Override
-    public void onItemClick(int position, LinearLayout music_container) {
-
-        if(listPositionsChecked.contains(position)){
-
-            int posItem = listPositionsChecked.indexOf(position);
-            listPositionsChecked.remove(posItem);
-
-            music_container.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
-
-        }else{
-            listPositionsChecked.add(position);
-            music_container.setBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
-        }
-
     }
 }
