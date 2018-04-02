@@ -53,7 +53,7 @@ public class LogInActivity extends AppCompatActivity{
     public void loadAuthClient(){
 
        builder  = new AuthenticationRequest.Builder(CLIENT_ID, AuthenticationResponse.Type.TOKEN, REDIRECT_URI);
-       builder.setScopes(new String[]{"streaming", "user-library-read", "playlist-modify-public"});
+       builder.setScopes(new String[]{"streaming", "user-library-read", "playlist-modify-public", "playlist-modify-public"});
        request = builder.build();
 
     }

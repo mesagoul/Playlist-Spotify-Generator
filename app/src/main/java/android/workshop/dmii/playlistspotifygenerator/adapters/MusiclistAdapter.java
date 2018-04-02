@@ -28,6 +28,10 @@ public class MusiclistAdapter extends RecyclerView.Adapter<MusiclistAdapter.View
         listener = adapterListener;
     }
 
+    public void setListMusic(ArrayList<Music> list){
+        this.listMusic = list;
+    }
+
 
     @NonNull
     @Override
@@ -46,7 +50,7 @@ public class MusiclistAdapter extends RecyclerView.Adapter<MusiclistAdapter.View
             @Override
             public void onClick(View v)
             {
-                listener.onItemClick(position, holder.music_container);
+                listener.onItemClick(position, holder.music_container, listMusic);
             }
         });
     }
@@ -75,6 +79,6 @@ public class MusiclistAdapter extends RecyclerView.Adapter<MusiclistAdapter.View
     }
 
     public interface MusiclistAdapterListener {
-        void onItemClick(int position, LinearLayout music_container);
+        void onItemClick(int position, LinearLayout music_container, ArrayList<Music> listMusic);
     }
 }

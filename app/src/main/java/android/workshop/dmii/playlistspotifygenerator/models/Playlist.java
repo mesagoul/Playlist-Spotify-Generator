@@ -2,13 +2,20 @@ package android.workshop.dmii.playlistspotifygenerator.models;
 
 import android.arch.lifecycle.ViewModel;
 import android.util.Log;
+import android.widget.Toast;
 import android.workshop.dmii.playlistspotifygenerator.network.SpotifyApiWrapper;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.Map;
 
 import kaaes.spotify.webapi.android.SpotifyService;
 import kaaes.spotify.webapi.android.models.Pager;
 import kaaes.spotify.webapi.android.models.PlaylistTrack;
+import kaaes.spotify.webapi.android.models.SnapshotId;
+import kaaes.spotify.webapi.android.models.TrackToRemove;
+import kaaes.spotify.webapi.android.models.TracksToRemove;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
@@ -23,6 +30,9 @@ public class Playlist extends ViewModel {
     //define callback interface
     interface PlayListListener {
         void onTracksLoaded(ArrayList<Music> musicListTemp);
+    }
+    public interface PlayListDeleteListener {
+        void onTrackDeleted(boolean success);
     }
 
     private String id;
@@ -100,6 +110,28 @@ public class Playlist extends ViewModel {
 
     public String getImageUrl() {
         return imageUrl;
+    }
+
+    public void deleteTrackFromPlayList(String uri, PlayListDeleteListener callback ){
+
+        TrackToRemove trackToRemove = new TrackToRemove();
+        trackToRemove.uri = uri;
+
+        TracksToRemove tracksToRemove = new TracksToRemove();
+        tracksToRemove.tracks = new LinkedList<TrackToRemove>();
+        tracksToRemove.tracks.add(trackToRemove);
+
+        spotify.removeTracksFromPlaylist(User.getInstance().getId(), this.getId(), tracksToRemove, new Callback<SnapshotId>() {
+            @Override
+            public void success(SnapshotId snapshotId, Response response) {
+                callback.onTrackDeleted(true);
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+               callback.onTrackDeleted(false);
+            }
+        });
     }
 
     private void getTracksFromPlayList(String playListId, PlayListListener callBack){

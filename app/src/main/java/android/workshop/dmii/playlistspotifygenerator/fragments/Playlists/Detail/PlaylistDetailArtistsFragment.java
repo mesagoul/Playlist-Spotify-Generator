@@ -14,6 +14,7 @@ import android.workshop.dmii.playlistspotifygenerator.adapters.ArtistListAdapter
 import android.workshop.dmii.playlistspotifygenerator.adapters.MusiclistAdapter;
 import android.workshop.dmii.playlistspotifygenerator.models.Artist;
 import android.workshop.dmii.playlistspotifygenerator.models.Music;
+import android.workshop.dmii.playlistspotifygenerator.models.Playlist;
 
 import java.util.ArrayList;
 
@@ -21,6 +22,7 @@ public class PlaylistDetailArtistsFragment extends Fragment {
 
     public ArrayList<Artist> listArtist;
     private RecyclerView uiListMusic;
+    public Playlist currentPlayList;
 
     public PlaylistDetailArtistsFragment() {
         // Required empty public constructor

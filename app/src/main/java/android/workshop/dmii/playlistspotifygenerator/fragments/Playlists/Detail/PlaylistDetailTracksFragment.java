@@ -11,9 +11,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 import android.workshop.dmii.playlistspotifygenerator.R;
 import android.workshop.dmii.playlistspotifygenerator.adapters.MusiclistAdapter;
 import android.workshop.dmii.playlistspotifygenerator.models.Music;
+import android.workshop.dmii.playlistspotifygenerator.models.Playlist;
 
 import java.util.ArrayList;
 
@@ -21,6 +23,8 @@ public class PlaylistDetailTracksFragment extends Fragment implements MusiclistA
 
     public ArrayList<Music> dataListMusic;
     private RecyclerView uiListMusic;
+    public Playlist currentPlayList;
+    public MusiclistAdapter musiclistAdapter;
 
     public PlaylistDetailTracksFragment() {
         // Required empty public constructor
@@ -39,7 +43,7 @@ public class PlaylistDetailTracksFragment extends Fragment implements MusiclistA
         uiListMusic = view.findViewById(R.id.playlist_detail_music_list);
         uiListMusic.setLayoutManager(new LinearLayoutManager(view.getContext()));
 
-        MusiclistAdapter musiclistAdapter = new MusiclistAdapter(dataListMusic, false);
+        musiclistAdapter = new MusiclistAdapter(dataListMusic, false);
         uiListMusic.setAdapter(musiclistAdapter);
         musiclistAdapter.setListener(this);
 
@@ -48,7 +52,22 @@ public class PlaylistDetailTracksFragment extends Fragment implements MusiclistA
     }
 
     @Override
-    public void onItemClick(int position, LinearLayout music_container) {
-        Log.d("ITEM",dataListMusic.get(position).getName());
+    public void onItemClick(int position, LinearLayout music_container, ArrayList<Music> listMusic) {
+        currentPlayList.deleteTrackFromPlayList(dataListMusic.get(position).getUri(), new Playlist.PlayListDeleteListener() {
+            @Override
+            public void onTrackDeleted(boolean success) {
+                if(success){
+                    Log.d("ITEM",dataListMusic.get(position).getName());
+
+                    dataListMusic.remove(position);
+
+                    musiclistAdapter.setListMusic(dataListMusic);
+                    musiclistAdapter.notifyDataSetChanged();
+
+                }else{
+                    Toast.makeText(getContext(), "Fail Delete from Playlist", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
     }
 }
