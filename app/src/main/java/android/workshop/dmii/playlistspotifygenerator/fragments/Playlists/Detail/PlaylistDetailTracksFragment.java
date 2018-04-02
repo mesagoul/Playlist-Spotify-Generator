@@ -47,8 +47,6 @@ public class PlaylistDetailTracksFragment extends Fragment implements MusiclistA
         uiListMusic.setAdapter(musiclistAdapter);
         musiclistAdapter.setListener(this);
 
-
-
     }
 
     @Override

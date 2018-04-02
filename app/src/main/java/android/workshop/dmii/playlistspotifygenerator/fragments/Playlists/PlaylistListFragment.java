@@ -58,6 +58,7 @@ public class PlaylistListFragment  extends Fragment{
         user.loadPlayLists();
         user.getPlayListList().observe(this, playListList -> {
             createGridView(playListList);
+            User.getInstance().setPlayListListStatic(playListList);
         });
 
     }

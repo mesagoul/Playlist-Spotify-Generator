@@ -78,25 +78,4 @@ public class PlayerFragment extends Fragment {
         });
 
     }
-
-    public void getRecommendations(){
-        Map<String, Object> options = new HashMap<>();
-        options.put("seed_artists", "artist_id");
-        options.put("seed_genres", "genre");
-        options.put("seed_tracks", "track_id");
-
-        spotify.getRecommendations(options, new Callback<Recommendations>() {
-            @Override
-            public void success(Recommendations recommendations, Response response) {
-                // Get tracks
-                // recommendations.tracks
-
-            }
-
-            @Override
-            public void failure(RetrofitError error) {
-
-            }
-        });
-    }
 }

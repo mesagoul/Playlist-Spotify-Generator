@@ -6,6 +6,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +18,7 @@ import android.widget.Toast;
 import android.workshop.dmii.playlistspotifygenerator.R;
 import android.workshop.dmii.playlistspotifygenerator.activities.DashboardActivity;
 import android.workshop.dmii.playlistspotifygenerator.adapters.MusiclistAdapter;
+import android.workshop.dmii.playlistspotifygenerator.models.Artist;
 import android.workshop.dmii.playlistspotifygenerator.models.Music;
 import android.workshop.dmii.playlistspotifygenerator.models.User;
 import android.workshop.dmii.playlistspotifygenerator.network.SpotifyApiWrapper;
@@ -77,6 +79,14 @@ public class CreatePlaylistFragment extends Fragment implements MusiclistAdapter
                 createPlaylist(name);
 
 
+            }
+        });
+
+        User.getInstance().getAllArtistsAndMusics(new User.GetAllListeners() {
+            @Override
+            public void onAllReady(ArrayList<Artist> listArtists, ArrayList<Music> listMusics) {
+                Log.d("DEBUG", String.valueOf(listMusics.size()));
+                Log.d("DEBUG", String.valueOf(listArtists.size()));
             }
         });
 
@@ -163,35 +173,11 @@ public class CreatePlaylistFragment extends Fragment implements MusiclistAdapter
 
     private void getSavedTracks(){
 
-        Map<String, Object> options = new HashMap<>();
-
-        spotify.getMySavedTracks(options, new SpotifyCallback<Pager<SavedTrack>>() {
+        User.getInstance().getSavedTracks(new User.SavedMusicsListener() {
             @Override
-            public void failure(SpotifyError spotifyError) {
-                Toast.makeText(getContext(),"Fail get saved tracks", Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            public void success(Pager<SavedTrack> savedTrackPager, Response response) {
-
-                ArrayList<Music> tempList = new ArrayList<Music>();
-
-                for(SavedTrack aTrack: savedTrackPager.items){
-                    tempList.add(new Music(
-                            aTrack.track.id,
-                            aTrack.track.name,
-                            aTrack.track.artists,
-                            aTrack.track.album.name,
-                            aTrack.track.preview_url,
-                            (int) aTrack.track.duration_ms,
-                            aTrack.track.uri
-                    ));
-                }
-
+            public void onSavedMusicsReady(ArrayList<Music> tempList) {
                 dataTracks = tempList;
-
                 onTracksReady(tempList);
-
             }
         });
     }

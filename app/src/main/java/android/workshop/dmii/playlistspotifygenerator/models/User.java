@@ -4,8 +4,10 @@ import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.ViewModel;
 import android.util.Log;
+import android.widget.Toast;
 import android.workshop.dmii.playlistspotifygenerator.network.SpotifyApiWrapper;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -15,6 +17,7 @@ import kaaes.spotify.webapi.android.SpotifyError;
 import kaaes.spotify.webapi.android.SpotifyService;
 import kaaes.spotify.webapi.android.models.Pager;
 import kaaes.spotify.webapi.android.models.PlaylistSimple;
+import kaaes.spotify.webapi.android.models.SavedTrack;
 import retrofit.client.Response;
 
 /**
@@ -27,6 +30,15 @@ public class User extends ViewModel{
         void onPlayListReady();
     }
 
+    public interface GetAllListeners{
+        void onAllReady(ArrayList<Artist> listArtists, ArrayList<Music> listMusics);
+    }
+
+    public interface SavedMusicsListener{
+        void onSavedMusicsReady(ArrayList<Music> tempList);
+
+    }
+
     public static final User userInstance = new User();
 
     private String id;
@@ -34,8 +46,14 @@ public class User extends ViewModel{
     private String login;
     private String token;
     private MutableLiveData<ArrayList<Playlist>> playListList = new MutableLiveData<>();
+    private ArrayList<Playlist> playListListStatic = new ArrayList<Playlist>();
     private ArrayList<Music> MusicList;
     public SpotifyService spotify;
+    private ArrayList<Music> savedMusics = new ArrayList<Music>();
+
+    public void setPlayListListStatic(ArrayList<Playlist> playListListStatic) {
+        this.playListListStatic = playListListStatic;
+    }
 
     public User() {
         spotify = SpotifyApiWrapper.getInstance().getService();
@@ -75,14 +93,95 @@ public class User extends ViewModel{
     public ArrayList<Music> getMusicList() {
         return MusicList;
     }
+
     public void setMusicList(ArrayList<Music> musicList) {
         MusicList = musicList;
     }
 
 
-    public void connect(){
-        // do something ...
+    public void getSavedTracks(SavedMusicsListener listener){
+        ArrayList<Music> tempList = new ArrayList<Music>();
+        Map<String, Object> options = new HashMap<>();
+
+        spotify.getMySavedTracks(options, new SpotifyCallback<Pager<SavedTrack>>() {
+            @Override
+            public void failure(SpotifyError spotifyError) {
+                listener.onSavedMusicsReady(tempList);
+            }
+
+            @Override
+            public void success(Pager<SavedTrack> savedTrackPager, Response response) {
+
+
+                for(SavedTrack aTrack: savedTrackPager.items){
+                    tempList.add(new Music(
+                            aTrack.track.id,
+                            aTrack.track.name,
+                            aTrack.track.artists,
+                            aTrack.track.album.name,
+                            aTrack.track.preview_url,
+                            (int) aTrack.track.duration_ms,
+                            aTrack.track.uri
+                    ));
+                }
+
+                savedMusics = tempList;
+                listener.onSavedMusicsReady(tempList);
+
+            }
+        });
     }
+
+
+
+
+    public void getAllArtistsAndMusics(GetAllListeners listeners){
+
+        ArrayList<Artist> listArtists = new ArrayList<Artist>();
+        ArrayList<Music> listMusics = new ArrayList<Music>();
+
+        // FROM PLAYLISTS
+        for(Playlist aPlaylist: playListListStatic){
+
+            // MUSICS
+            for(Music aMusic: aPlaylist.getMusicList()){
+                if(!listMusics.contains(aMusic)){
+                    listMusics.add(aMusic);
+                }
+            }
+
+            // ARTISTS
+            for(Artist anArtist: aPlaylist.getArtist()){
+
+                if(!listArtists.contains(anArtist)){
+                    listArtists.add(anArtist);
+                }
+            }
+        }
+
+        // FROM SAVED MUSICS
+        this.getSavedTracks(new SavedMusicsListener() {
+            @Override
+            public void onSavedMusicsReady(ArrayList<Music> list) {
+
+                for (Music aMusic: list){
+                    // ARTISTS
+                    for(Artist anArtist :aMusic.getArtist()){
+                        if(!listArtists.contains(anArtist)){
+                            listArtists.add(anArtist);
+                        }
+                    }
+                    // MUSICS
+                    if(!listMusics.contains(aMusic)){
+                        listMusics.add(aMusic);
+                    }
+                }
+
+                listeners.onAllReady(listArtists, listMusics);
+            }
+        });
+    }
+
 
     public void setId(String id) {
         this.id = id;
