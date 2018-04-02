@@ -34,6 +34,7 @@ public class ArtistListAdapter extends RecyclerView.Adapter<ArtistListAdapter.Vi
         holder.music_id.setText(String.valueOf(position));
         holder.music_title.setText(music.getName());
         holder.music_delete.setVisibility(View.INVISIBLE);
+        holder.music_add.setVisibility(View.INVISIBLE);
     }
 
     @Override
@@ -46,6 +47,7 @@ public class ArtistListAdapter extends RecyclerView.Adapter<ArtistListAdapter.Vi
         private final TextView music_id;
         private final TextView music_title;
         private final Button music_delete;
+        private final Button music_add;
 
         ViewHolder(View itemView) {
             super(itemView);
@@ -53,6 +55,7 @@ public class ArtistListAdapter extends RecyclerView.Adapter<ArtistListAdapter.Vi
             music_id = (TextView) itemView.findViewById(R.id.item_id);
             music_title = (TextView) itemView.findViewById(R.id.item_title);
             music_delete = (Button) itemView.findViewById(R.id.item_delete);
+            music_add = (Button) itemView.findViewById(R.id.item_add);
 
         }
     }

@@ -46,13 +46,27 @@ public class MusiclistAdapter extends RecyclerView.Adapter<MusiclistAdapter.View
         Music music = listMusic.get(position);
         holder.music_id.setText(String.valueOf(position));
         holder.music_title.setText(music.getName());
-        holder.music_delete.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v)
-            {
-                listener.onItemClick(position, holder.music_container, listMusic);
-            }
-        });
+
+        if(isCreateList){
+            holder.music_delete.setVisibility(View.GONE);
+            holder.music_add.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v)
+                {
+                    listener.onItemClick(position, holder.music_container, listMusic);
+                }
+            });
+        }else{
+            holder.music_add.setVisibility(View.GONE);
+            holder.music_delete.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v)
+                {
+                    listener.onItemClick(position, holder.music_container, listMusic);
+                }
+            });
+
+        }
     }
 
     @Override
@@ -65,6 +79,7 @@ public class MusiclistAdapter extends RecyclerView.Adapter<MusiclistAdapter.View
         private final TextView music_id;
         private final TextView music_title;
         private final Button music_delete;
+        private final Button music_add;
         private final LinearLayout music_container;
 
         ViewHolder(View itemView) {
@@ -73,6 +88,7 @@ public class MusiclistAdapter extends RecyclerView.Adapter<MusiclistAdapter.View
             music_id = (TextView) itemView.findViewById(R.id.item_id);
             music_title = (TextView) itemView.findViewById(R.id.item_title);
             music_delete = (Button) itemView.findViewById(R.id.item_delete);
+            music_add = (Button) itemView.findViewById(R.id.item_add);
             music_container = (LinearLayout) itemView.findViewById(R.id.item_container);
 
         }

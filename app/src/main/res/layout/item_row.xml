@@ -40,10 +40,18 @@
         <Button
             android:layout_gravity="center"
             android:id="@+id/item_delete"
-            android:layout_width="15dp"
-            android:layout_height="15dp"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
             android:backgroundTint="@color/colorLight"
             android:background="@drawable/multiply"
+            />
+
+        <Button
+            android:layout_gravity="center"
+            android:id="@+id/item_add"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:background="@drawable/add"
             />
 
     </LinearLayout>

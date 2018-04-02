@@ -115,7 +115,12 @@ public class CreatePlaylistFragment extends Fragment implements MusiclistAdapter
         spotify.createPlaylist(userId, options, new Callback<Playlist>() {
             @Override
             public void success(Playlist playlist, Response response) {
-                saveTracksIntoPlayList(playlist.id);
+                if(listPositionsChecked.size() > 0){
+                    saveTracksIntoPlayList(playlist.id);
+
+                }else{
+                    ((DashboardActivity)getActivity()).loadNewFragment(new PlaylistListFragment(),false, true);
+                }
             }
 
             @Override
