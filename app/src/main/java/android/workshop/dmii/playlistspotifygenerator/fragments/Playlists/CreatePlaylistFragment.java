@@ -47,10 +47,7 @@ public class CreatePlaylistFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        Map<String, Object> options = new HashMap<>();
-        options.put("Scope", "user-library-read");
-
-        spotify.getMySavedTracks(options, new SpotifyCallback<Pager<SavedTrack>>() {
+        spotify.getMySavedTracks(new SpotifyCallback<Pager<SavedTrack>>() {
             @Override
             public void failure(SpotifyError spotifyError) {
 

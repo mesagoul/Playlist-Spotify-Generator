@@ -11,7 +11,7 @@
         android:layout_height="wrap_content"
         android:ems="10"
         android:inputType="textPersonName"
-        android:text="@string/nom" />
+        android:hint="@string/nom" />
 
     <Spinner
         android:id="@+id/genre_list"
@@ -25,7 +25,7 @@
         android:layout_height="wrap_content"
         android:ems="10"
         android:inputType="textPersonName"
-        android:text="@string/chanson" />
+        android:hint="@string/chanson" />
 
 
     <EditText
@@ -34,7 +34,7 @@
         android:layout_height="wrap_content"
         android:ems="10"
         android:inputType="textPersonName"
-        android:text="@string/artist"/>
+        android:hint="@string/artist"/>
 
     <Button
         android:id="@+id/generate_btn"

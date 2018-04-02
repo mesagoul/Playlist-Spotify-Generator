@@ -6,17 +6,25 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.Spinner;
+import android.widget.TextView;
+import android.widget.Toast;
 import android.workshop.dmii.playlistspotifygenerator.R;
 import android.workshop.dmii.playlistspotifygenerator.activities.DashboardActivity;
 import android.workshop.dmii.playlistspotifygenerator.models.User;
 import android.workshop.dmii.playlistspotifygenerator.network.SpotifyApiWrapper;
+
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -34,10 +42,18 @@ public class GeneratePlaylistFragment extends Fragment {
     private User user;
     private SpotifyService spotify;
     private ArrayList<String> categories;
+    private String selectedMusicCategory;
+    private String newPlaylsitName;
+    private String newArtistName;
+    private String newSongName;
 
     public GeneratePlaylistFragment() {
         user = User.getInstance();
         spotify = SpotifyApiWrapper.getInstance().getService();
+        selectedMusicCategory = "";
+        newPlaylsitName = "";
+        newArtistName = "";
+        newSongName = "";
     }
 
     @Nullable
@@ -53,6 +69,11 @@ public class GeneratePlaylistFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         Spinner spinner = (Spinner) getView().findViewById(R.id.genre_list);
+        Button generatePlaylistBtn = (Button) getView().findViewById(R.id.generate_btn);
+        TextView playlistNameView = (TextView) getView().findViewById(R.id.playlist_name);
+        TextView artistNameView = (TextView) getView().findViewById(R.id.artist_name_text);
+        TextView songNameView = (TextView) getView().findViewById(R.id.songname_text);
+
 
         Map<String, Object> options = new HashMap<>();
         options.put("limit", 50);
@@ -66,6 +87,7 @@ public class GeneratePlaylistFragment extends Fragment {
             @Override
             public void success(CategoriesPager categoriesPager, Response response) {
 
+                //setting spinner items
                 categories = new ArrayList<String>();
 
                 for(int i =0; i<categoriesPager.categories.total ; i++){
@@ -79,10 +101,78 @@ public class GeneratePlaylistFragment extends Fragment {
             }
 
         });
+
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                selectedMusicCategory = adapterView.getItemAtPosition(i).toString();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+
+        playlistNameView.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                newPlaylsitName = playlistNameView.getText().toString();
+            }
+            @Override
+            public void afterTextChanged(Editable editable) {}
+        });
+
+
+        artistNameView.addTextChangedListener(new TextWatcher() {
+
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                newArtistName = artistNameView.getText().toString();
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {}
+        });
+
+        songNameView.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                newSongName = songNameView.getText().toString();
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {}
+        });
+
+        generatePlaylistBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //check if playlist name is null
+                if(!playlistNameView.getText().toString().equals("")){
+                    generatePlaylist();
+                }else{
+                    Toast.makeText(getContext(), "Set a name to your playlist ! :)", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
     }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+    }
+
+    private void generatePlaylist(){
+        Toast.makeText(getContext(), "generating playlist ...", Toast.LENGTH_SHORT).show();
     }
 }
