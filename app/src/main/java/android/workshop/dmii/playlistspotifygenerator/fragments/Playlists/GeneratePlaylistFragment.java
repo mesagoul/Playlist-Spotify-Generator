@@ -1,13 +1,9 @@
 package android.workshop.dmii.playlistspotifygenerator.fragments.Playlists;
 
-import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,12 +16,10 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.workshop.dmii.playlistspotifygenerator.R;
-import android.workshop.dmii.playlistspotifygenerator.activities.DashboardActivity;
 import android.workshop.dmii.playlistspotifygenerator.models.User;
 import android.workshop.dmii.playlistspotifygenerator.network.SpotifyApiWrapper;
 
-import org.w3c.dom.Text;
-
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -34,7 +28,9 @@ import kaaes.spotify.webapi.android.SpotifyCallback;
 import kaaes.spotify.webapi.android.SpotifyError;
 import kaaes.spotify.webapi.android.SpotifyService;
 import kaaes.spotify.webapi.android.models.CategoriesPager;
-import kaaes.spotify.webapi.android.models.Pager;
+import kaaes.spotify.webapi.android.models.Playlist;
+import retrofit.Callback;
+import retrofit.RetrofitError;
 import retrofit.client.Response;
 
 public class GeneratePlaylistFragment extends Fragment {
@@ -42,18 +38,20 @@ public class GeneratePlaylistFragment extends Fragment {
     private User user;
     private SpotifyService spotify;
     private ArrayList<String> categories;
+
+    private String newPlaylistName;
     private String selectedMusicCategory;
-    private String newPlaylsitName;
-    private String newArtistName;
-    private String newSongName;
+    private String selectedArtist;
+    private String selectedTrack;
 
     public GeneratePlaylistFragment() {
         user = User.getInstance();
         spotify = SpotifyApiWrapper.getInstance().getService();
+
+        newPlaylistName = "";
         selectedMusicCategory = "";
-        newPlaylsitName = "";
-        newArtistName = "";
-        newSongName = "";
+        selectedArtist = "";
+        selectedTrack = "";
     }
 
     @Nullable
@@ -68,11 +66,12 @@ public class GeneratePlaylistFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        Spinner spinner = (Spinner) getView().findViewById(R.id.genre_list);
         Button generatePlaylistBtn = (Button) getView().findViewById(R.id.generate_btn);
         TextView playlistNameView = (TextView) getView().findViewById(R.id.playlist_name);
-        TextView artistNameView = (TextView) getView().findViewById(R.id.artist_name_text);
-        TextView songNameView = (TextView) getView().findViewById(R.id.songname_text);
+
+        Spinner categoriesSpinner = (Spinner) getView().findViewById(R.id.genre_list);
+        Spinner artistsSpinner = (Spinner) getView().findViewById(R.id.artists_list);
+        Spinner tracksSpinner = (Spinner) getView().findViewById(R.id.tracks_list);
 
 
         Map<String, Object> options = new HashMap<>();
@@ -87,7 +86,7 @@ public class GeneratePlaylistFragment extends Fragment {
             @Override
             public void success(CategoriesPager categoriesPager, Response response) {
 
-                //setting spinner items
+                //setting categoriesSpinner items and adapter
                 categories = new ArrayList<String>();
 
                 for(int i =0; i<categoriesPager.categories.total ; i++){
@@ -95,69 +94,82 @@ public class GeneratePlaylistFragment extends Fragment {
                     categories.add(currentCategory);
                 }
 
-                ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, categories);
-                dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                spinner.setAdapter(dataAdapter);
+                ArrayAdapter<String> categoriesDataAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, categories);
+                categoriesDataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                categoriesSpinner.setAdapter(categoriesDataAdapter);
+
+
+                //setting artistsSpinner items and adapter
+                ArrayList<String> artists = new ArrayList<String>();
+                artists.add("lol");
+                artists.add("mdr");
+                artists.add("xd");
+
+                /*for(int i =0; i<artistsPager.artists.total ; i++){
+                    String currentCategory = (String) artistsPager.artists.items.get(i).name;
+                    categories.add(currentCategory);
+                }*/
+
+                ArrayAdapter<String> artistsDataAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, artists);
+                artistsDataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                artistsSpinner.setAdapter(artistsDataAdapter);
+
+
+                //Setting tracks spinner
+                ArrayList<String> tracks = new ArrayList<String>();
+                tracks.add("musique 1");
+                tracks.add("musique 2");
+                tracks.add("musique 3");
+                tracks.add("musique 4");
+                tracks.add("musique 5");
+
+                ArrayAdapter<String> tracksDataAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, tracks);
+                tracksDataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                tracksSpinner.setAdapter(tracksDataAdapter);
             }
 
         });
 
-        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        categoriesSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 selectedMusicCategory = adapterView.getItemAtPosition(i).toString();
             }
 
             @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
-
-            }
+            public void onNothingSelected(AdapterView<?> adapterView) {}
         });
 
-        playlistNameView.addTextChangedListener(new TextWatcher() {
+        artistsSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                newPlaylsitName = playlistNameView.getText().toString();
-            }
-            @Override
-            public void afterTextChanged(Editable editable) {}
-        });
-
-
-        artistNameView.addTextChangedListener(new TextWatcher() {
-
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                newArtistName = artistNameView.getText().toString();
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                selectedArtist = adapterView.getItemAtPosition(i).toString();
             }
 
             @Override
-            public void afterTextChanged(Editable editable) {}
+            public void onNothingSelected(AdapterView<?> adapterView) {}
         });
 
-        songNameView.addTextChangedListener(new TextWatcher() {
+        tracksSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                newSongName = songNameView.getText().toString();
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                selectedTrack = adapterView.getItemAtPosition(i).toString();
             }
 
             @Override
-            public void afterTextChanged(Editable editable) {}
+            public void onNothingSelected(AdapterView<?> adapterView) {}
         });
+
+
+
 
         generatePlaylistBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //check if playlist name is null
+                newPlaylistName = playlistNameView.getText().toString();
+
+
                 if(!playlistNameView.getText().toString().equals("")){
                     generatePlaylist();
                 }else{
@@ -174,5 +186,22 @@ public class GeneratePlaylistFragment extends Fragment {
 
     private void generatePlaylist(){
         Toast.makeText(getContext(), "generating playlist ...", Toast.LENGTH_SHORT).show();
+
+        String userId = user.getId();
+        Map<String, Object> options = new HashMap<>();
+        options.put("name", newPlaylistName);
+        options.put("public", true);
+
+        spotify.createPlaylist(userId, options, new Callback<Playlist>() {
+            @Override
+            public void success(Playlist playlist, Response response) {
+
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+
+            }
+        });
     }
 }
