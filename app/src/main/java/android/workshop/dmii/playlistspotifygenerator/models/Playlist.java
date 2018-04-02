@@ -1,20 +1,14 @@
 package android.workshop.dmii.playlistspotifygenerator.models;
 
-import android.arch.lifecycle.LiveData;
-import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.ViewModel;
 import android.util.Log;
 import android.workshop.dmii.playlistspotifygenerator.network.SpotifyApiWrapper;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 import kaaes.spotify.webapi.android.SpotifyService;
-import kaaes.spotify.webapi.android.models.Image;
 import kaaes.spotify.webapi.android.models.Pager;
-import kaaes.spotify.webapi.android.models.PlaylistSimple;
 import kaaes.spotify.webapi.android.models.PlaylistTrack;
-import kaaes.spotify.webapi.android.models.Track;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
@@ -24,6 +18,7 @@ import retrofit.client.Response;
  */
 
 public class Playlist extends ViewModel {
+
 
     //define callback interface
     interface PlayListListener {
@@ -124,7 +119,8 @@ public class Playlist extends ViewModel {
                         aTrack.track.artists,
                         aTrack.track.album.name,
                         aTrack.track.preview_url,
-                        (int) aTrack.track.duration_ms)
+                        (int) aTrack.track.duration_ms,
+                        aTrack.track.uri)
                     );
                 }
 

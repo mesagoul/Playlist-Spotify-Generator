@@ -107,7 +107,10 @@ public class User extends ViewModel{
                 for(int i = 0 ; i < playlistSimplePager.total ; i++){
                     final int cpt = i;
                     PlaylistSimple aPlayList = playlistSimplePager.items.get(i);
-                    Playlist p = new Playlist(aPlayList.id, aPlayList.name, aPlayList.images.get(0).url);
+
+                    String image = (aPlayList.images.size() > 0 ) ? aPlayList.images.get(0).url  : "https://lh5.ggpht.com/UxhAlm7oD9I3NnuwymJ-2NrSD7IKbu4MvorTOnSeaDWi6-k3kFgCBXmLKULmuvs81w=h310";
+                    Playlist p = new Playlist(aPlayList.id, aPlayList.name, image);
+
                     p.loadMusics(new UserListeners() {
                         @Override
                         public void onPlayListReady() {

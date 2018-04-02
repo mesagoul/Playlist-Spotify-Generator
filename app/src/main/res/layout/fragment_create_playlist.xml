@@ -6,22 +6,28 @@
     tools:context="android.workshop.dmii.playlistspotifygenerator.fragments.Playlists.CreatePlaylistFragment">
 
     <EditText
-        android:id="@+id/playlist_name"
+        android:layout_weight="10"
+        android:id="@+id/create_playlist_name"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         android:ems="10"
         android:inputType="textPersonName"
         android:text="@string/nom" />
 
-
-    <ListView
+    <android.support.v7.widget.RecyclerView
+        android:layout_weight="80"
         android:layout_width="match_parent"
-        android:layout_height="317dp" />
+        android:layout_height="0dp"
+        android:id="@+id/create_playlist_list"
+        >
+
+    </android.support.v7.widget.RecyclerView>
 
     <Button
-        android:id="@+id/createplayslist_btn"
+        android:layout_weight="10"
+        android:id="@+id/create_playslist_btn"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         android:text="@string/create" />
 
 </LinearLayout>

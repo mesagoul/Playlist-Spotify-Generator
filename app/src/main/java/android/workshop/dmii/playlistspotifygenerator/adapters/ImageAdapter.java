@@ -70,7 +70,29 @@ public class ImageAdapter extends BaseAdapter {
             //.crossFade()
             .into(imageView);
 
-        imageView.setImageResource(mThumbIds[position]);
+        imageView.setImageResource(mThumbIds[0]);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
         return imageView;
     }

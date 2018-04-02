@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.workshop.dmii.playlistspotifygenerator.R;
 import android.workshop.dmii.playlistspotifygenerator.adapters.MusiclistAdapter;
 import android.workshop.dmii.playlistspotifygenerator.models.Music;
@@ -38,7 +39,7 @@ public class PlaylistDetailTracksFragment extends Fragment implements MusiclistA
         uiListMusic = view.findViewById(R.id.playlist_detail_music_list);
         uiListMusic.setLayoutManager(new LinearLayoutManager(view.getContext()));
 
-        MusiclistAdapter musiclistAdapter = new MusiclistAdapter(dataListMusic);
+        MusiclistAdapter musiclistAdapter = new MusiclistAdapter(dataListMusic, false);
         uiListMusic.setAdapter(musiclistAdapter);
         musiclistAdapter.setListener(this);
 
@@ -47,7 +48,7 @@ public class PlaylistDetailTracksFragment extends Fragment implements MusiclistA
     }
 
     @Override
-    public void onItemClick(int position) {
+    public void onItemClick(int position, LinearLayout music_container) {
         Log.d("ITEM",dataListMusic.get(position).getName());
     }
 }

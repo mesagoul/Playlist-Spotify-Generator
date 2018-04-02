@@ -19,16 +19,22 @@ public class Music {
     private ArrayList<Genre> genreList;
     private ArrayList<Artist> artistsList;
     private String albumName;
+    private String uri;
 
 
-    public Music(String id, String name, List<ArtistSimple> artists, String albumName, String url, Integer duration) {
+    public Music(String id, String name, List<ArtistSimple> artists, String albumName, String url, Integer duration, String uri) {
         this.id = id;
         this.name = name;
         this.artistsList = convertArtists(artists);
         this.albumName = albumName;
         this.url = url;
         this.duration = duration;
+        this.uri = uri;
 
+    }
+
+    public String getUri(){
+        return this.uri;
     }
 
     public ArrayList<Artist> convertArtists(List<ArtistSimple> list){

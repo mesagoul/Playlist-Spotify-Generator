@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.workshop.dmii.playlistspotifygenerator.R;
 import android.workshop.dmii.playlistspotifygenerator.models.Music;
@@ -15,10 +16,12 @@ import java.util.ArrayList;
 public class MusiclistAdapter extends RecyclerView.Adapter<MusiclistAdapter.ViewHolder> {
 
     private ArrayList<Music> listMusic;
+    private boolean isCreateList;
     private static MusiclistAdapterListener listener;
 
-    public MusiclistAdapter(ArrayList<Music> list) {
+    public MusiclistAdapter(ArrayList<Music> list, boolean btnIsCreate) {
         this.listMusic = list;
+        this.isCreateList = btnIsCreate;
     }
 
     public void setListener(MusiclistAdapterListener adapterListener) {
@@ -41,8 +44,9 @@ public class MusiclistAdapter extends RecyclerView.Adapter<MusiclistAdapter.View
         holder.music_title.setText(music.getName());
         holder.music_delete.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-                listener.onItemClick(position);
+            public void onClick(View v)
+            {
+                listener.onItemClick(position, holder.music_container);
             }
         });
     }
@@ -57,6 +61,7 @@ public class MusiclistAdapter extends RecyclerView.Adapter<MusiclistAdapter.View
         private final TextView music_id;
         private final TextView music_title;
         private final Button music_delete;
+        private final LinearLayout music_container;
 
         ViewHolder(View itemView) {
             super(itemView);
@@ -64,11 +69,12 @@ public class MusiclistAdapter extends RecyclerView.Adapter<MusiclistAdapter.View
             music_id = (TextView) itemView.findViewById(R.id.item_id);
             music_title = (TextView) itemView.findViewById(R.id.item_title);
             music_delete = (Button) itemView.findViewById(R.id.item_delete);
+            music_container = (LinearLayout) itemView.findViewById(R.id.item_container);
 
         }
     }
 
     public interface MusiclistAdapterListener {
-        void onItemClick(int position);
+        void onItemClick(int position, LinearLayout music_container);
     }
 }
