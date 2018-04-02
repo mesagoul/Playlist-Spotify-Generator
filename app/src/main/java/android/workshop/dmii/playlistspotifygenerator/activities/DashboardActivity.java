@@ -17,6 +17,7 @@ import android.widget.AdapterView;
 import android.widget.Spinner;
 import android.widget.Toast;
 import android.workshop.dmii.playlistspotifygenerator.R;
+import android.workshop.dmii.playlistspotifygenerator.fragments.PlayerFragment;
 import android.workshop.dmii.playlistspotifygenerator.fragments.Playlists.CreatePlaylistFragment;
 import android.workshop.dmii.playlistspotifygenerator.fragments.Playlists.GeneratePlaylistFragment;
 import android.workshop.dmii.playlistspotifygenerator.fragments.Playlists.PlaylistListFragment;
@@ -53,6 +54,7 @@ public class DashboardActivity extends AppCompatActivity implements NavigationVi
         navigationView.setNavigationItemSelectedListener(this);
 
         loadNewFragment(new PlaylistListFragment(), false, true);
+        loadPlayer();
     }
 
 
@@ -103,6 +105,13 @@ public class DashboardActivity extends AppCompatActivity implements NavigationVi
                 ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
             }
         }
+        ft.addToBackStack(null);
+        ft.commit();
+    }
+
+    public void loadPlayer(){
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        ft.replace(R.id.frame_player, new PlayerFragment());
         ft.addToBackStack(null);
         ft.commit();
     }

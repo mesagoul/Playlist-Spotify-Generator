@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorDark"
+    android:id="@+id/player_container">
+
+    <LinearLayout
+        android:gravity="center"
+        android:id="@+id/player_prev"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1">
+        <Button
+            android:id="@+id/player_prev_btn"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:background="@drawable/back"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:gravity="center"
+        android:id="@+id/player_play"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1">
+        <Button
+            android:id="@+id/player_play_btn"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:background="@drawable/play"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:gravity="center"
+        android:id="@+id/player_next"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1">
+
+        <Button
+            android:id="@+id/player_next_btn"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:background="@drawable/next"/>
+
+    </LinearLayout>
+
+</LinearLayout>
