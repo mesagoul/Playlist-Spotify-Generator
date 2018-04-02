@@ -77,8 +77,6 @@ public class CreatePlaylistFragment extends Fragment implements MusiclistAdapter
             public void onClick(View v) {
                 String name = nameList.getText().toString();
                 createPlaylist(name);
-
-
             }
         });
 
