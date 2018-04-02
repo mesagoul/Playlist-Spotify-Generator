@@ -80,14 +80,6 @@ public class CreatePlaylistFragment extends Fragment implements MusiclistAdapter
             }
         });
 
-        User.getInstance().getAllArtistsAndMusics(new User.GetAllListeners() {
-            @Override
-            public void onAllReady(ArrayList<Artist> listArtists, ArrayList<Music> listMusics) {
-                Log.d("DEBUG", String.valueOf(listMusics.size()));
-                Log.d("DEBUG", String.valueOf(listArtists.size()));
-            }
-        });
-
         getSavedTracks();
     }
     @Override
