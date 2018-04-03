@@ -6,7 +6,9 @@ import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.View;
+import android.widget.Toast;
 import android.workshop.dmii.playlistspotifygenerator.R;
 import android.workshop.dmii.playlistspotifygenerator.helpers.ConnexionHelper;
 import android.workshop.dmii.playlistspotifygenerator.models.User;
@@ -114,16 +116,6 @@ public class SplashScreen extends Activity{
                         User.getInstance().setId(userPrivate.id);
                         User.getInstance().setName(userPrivate.display_name);
 
-                        RestAdapter restAdapter = new RestAdapter.Builder()
-                                .setEndpoint(SpotifyApi.SPOTIFY_WEB_API_ENDPOINT)
-                                .setRequestInterceptor(new RequestInterceptor() {
-                                    @Override
-                                    public void intercept(RequestFacade request) {
-                                        //request.addHeader("Authorization", "Bearer " + token);
-                                        request.addHeader("scope", "user-library-read");
-                                    }
-                                })
-                                .build();
                         ConnexionHelper.onGetUserFinished(true, SplashScreen.this, toRefreshActivity);
                     }
 
@@ -132,6 +124,8 @@ public class SplashScreen extends Activity{
                         ConnexionHelper.onGetUserFinished(false, SplashScreen.this, toRefreshActivity);
                     }
                 });
+            }else{
+                Toast.makeText(getApplicationContext(), "AUTHENTICATION_SERVICE_UNAVAILABLE", Toast.LENGTH_SHORT).show();
             }
         }
     }
