@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,8 +17,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.workshop.dmii.playlistspotifygenerator.R;
-import android.workshop.dmii.playlistspotifygenerator.helpers.CustomArtistAdapter;
-import android.workshop.dmii.playlistspotifygenerator.helpers.CustomMusicAdapter;
+import android.workshop.dmii.playlistspotifygenerator.helpers.CustomAdapter;
 import android.workshop.dmii.playlistspotifygenerator.models.Artist;
 import android.workshop.dmii.playlistspotifygenerator.models.Music;
 import android.workshop.dmii.playlistspotifygenerator.models.User;
@@ -32,6 +32,7 @@ import kaaes.spotify.webapi.android.SpotifyError;
 import kaaes.spotify.webapi.android.SpotifyService;
 import kaaes.spotify.webapi.android.models.CategoriesPager;
 import kaaes.spotify.webapi.android.models.Playlist;
+import kaaes.spotify.webapi.android.models.Recommendations;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
@@ -43,18 +44,20 @@ public class GeneratePlaylistFragment extends Fragment {
     private ArrayList<String> categories;
 
     private String newPlaylistName;
+
     private String selectedMusicCategory;
-    private String selectedArtist;
-    private String selectedTrack;
+    private Artist selectedArtist;
+    private Music selectedTrack;
+
+    private Spinner artistsSpinner;
+    private Spinner songsSpinner;
+    private Spinner categoriesSpinner;
 
     public GeneratePlaylistFragment() {
         user = User.getInstance();
         spotify = SpotifyApiWrapper.getInstance().getService();
 
         newPlaylistName = "";
-        selectedMusicCategory = "";
-        selectedArtist = "";
-        selectedTrack = "";
     }
 
     @Nullable
@@ -72,9 +75,9 @@ public class GeneratePlaylistFragment extends Fragment {
         Button generatePlaylistBtn = (Button) getView().findViewById(R.id.generate_btn);
         TextView playlistNameView = (TextView) getView().findViewById(R.id.playlist_name);
 
-        Spinner categoriesSpinner = (Spinner) getView().findViewById(R.id.genre_list);
-        Spinner artistsSpinner = (Spinner) getView().findViewById(R.id.artists_list);
-        Spinner tracksSpinner = (Spinner) getView().findViewById(R.id.tracks_list);
+        categoriesSpinner = (Spinner) getView().findViewById(R.id.genre_list);
+        artistsSpinner = (Spinner) getView().findViewById(R.id.artists_list);
+        songsSpinner = (Spinner) getView().findViewById(R.id.tracks_list);
 
 
         Map<String, Object> options = new HashMap<>();
@@ -97,7 +100,7 @@ public class GeneratePlaylistFragment extends Fragment {
                     categories.add(currentCategory);
                 }
 
-                ArrayAdapter<String> categoriesDataAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, categories);
+                ArrayAdapter<String> categoriesDataAdapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, categories);
                 categoriesDataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                 categoriesSpinner.setAdapter(categoriesDataAdapter);
 
@@ -106,54 +109,12 @@ public class GeneratePlaylistFragment extends Fragment {
                 user.getAllArtistsAndMusics(new User.GetAllListeners() {
                     @Override
                     public void onAllReady(ArrayList<Artist> listArtists, ArrayList<Music> listMusics) {
-                        Log.d("DEBUG", String.valueOf(listMusics.size()));
-                        Log.d("DEBUG", String.valueOf(listArtists.size()));
-
-                        CustomArtistAdapter artistsDataAdapter = new CustomArtistAdapter(getActivity(), android.R.layout.simple_spinner_item, listArtists);
-                        artistsDataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                        artistsSpinner.setAdapter(artistsDataAdapter);
-
-                        CustomMusicAdapter tracksDataAdapter = new CustomMusicAdapter(getActivity(), android.R.layout.simple_spinner_item, listMusics);
-                        tracksDataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                        tracksSpinner.setAdapter(tracksDataAdapter);
+                        loadSpinners(artistsSpinner, songsSpinner, listArtists, listMusics);
                     }
                 });
             }
 
         });
-
-        categoriesSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                selectedMusicCategory = adapterView.getItemAtPosition(i).toString();
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {}
-        });
-
-        artistsSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                selectedArtist = adapterView.getItemAtPosition(i).toString();
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {}
-        });
-
-        tracksSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                selectedTrack = adapterView.getItemAtPosition(i).toString();
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {}
-        });
-
-
-
 
         generatePlaylistBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -179,12 +140,26 @@ public class GeneratePlaylistFragment extends Fragment {
     private void generatePlaylist(){
         Toast.makeText(getContext(), "generating playlist ...", Toast.LENGTH_SHORT).show();
 
-        String userId = user.getId();
         Map<String, Object> options = new HashMap<>();
+        String userId = user.getId();
+
         options.put("name", newPlaylistName);
         options.put("public", true);
+        options.put("limit", 15);
 
-        spotify.createPlaylist(userId, options, new Callback<Playlist>() {
+        if(!TextUtils.isEmpty(selectedMusicCategory)){
+            options.put("seed_genres", selectedMusicCategory);
+        }
+
+        if(!TextUtils.isEmpty(selectedArtist.getName())){
+            options.put("seed_artist", selectedArtist.getId());
+        }
+
+        if(!TextUtils.isEmpty(selectedTrack.getName())){
+            options.put("seed_tracks", selectedTrack.getId());
+        }
+
+        /*spotify.createPlaylist(userId, options, new Callback<Playlist>() {
             @Override
             public void success(Playlist playlist, Response response) {
 
@@ -194,6 +169,57 @@ public class GeneratePlaylistFragment extends Fragment {
             public void failure(RetrofitError error) {
 
             }
+        });*/
+
+        spotify.getRecommendations(options, new SpotifyCallback<Recommendations>() {
+            @Override
+            public void failure(SpotifyError spotifyError) {
+
+            }
+
+            @Override
+            public void success(Recommendations recommendations, Response response) {
+
+            }
         });
+    }
+
+    public void loadSpinners(Spinner artistsSpinner, Spinner tracksSpinner, ArrayList<Artist> listArtists, ArrayList<Music> listMusics){
+        CustomAdapter artistAdapter = new CustomAdapter(getContext(), listArtists);
+        artistsSpinner.setAdapter(artistAdapter);
+
+        artistsSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                selectedArtist = listArtists.get(position);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {}
+        });
+
+        CustomAdapter tracksAdapter = new CustomAdapter(getContext(), listMusics);
+        tracksSpinner.setAdapter(tracksAdapter);
+
+        tracksSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                selectedTrack = listMusics.get(position);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {}
+        });
+
+        categoriesSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                selectedMusicCategory = adapterView.getItemAtPosition(i).toString();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {}
+        });
+
     }
 }
