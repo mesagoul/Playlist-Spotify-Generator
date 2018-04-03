@@ -138,6 +138,9 @@ public class User extends ViewModel{
 
     public void getAllArtistsAndMusics(GetAllListeners listeners){
 
+        ArrayList<String> musicIds = new ArrayList<String>();
+        ArrayList<String> artistsIds = new ArrayList<String>();
+
         ArrayList<Artist> listArtists = new ArrayList<Artist>();
         ArrayList<Music> listMusics = new ArrayList<Music>();
 
@@ -146,7 +149,8 @@ public class User extends ViewModel{
 
             // MUSICS
             for(Music aMusic: aPlaylist.getMusicList()){
-                if(!listMusics.contains(aMusic)){
+                if(!musicIds.contains(aMusic.getId())){
+                    musicIds.add(aMusic.getId());
                     listMusics.add(aMusic);
                 }
             }
@@ -154,7 +158,8 @@ public class User extends ViewModel{
             // ARTISTS
             for(Artist anArtist: aPlaylist.getArtist()){
 
-                if(!listArtists.contains(anArtist)){
+                if(!artistsIds.contains(anArtist.getId())){
+                    artistsIds.add(anArtist.getId());
                     listArtists.add(anArtist);
                 }
             }
@@ -168,12 +173,14 @@ public class User extends ViewModel{
                 for (Music aMusic: list){
                     // ARTISTS
                     for(Artist anArtist :aMusic.getArtist()){
-                        if(!listArtists.contains(anArtist)){
+                        if(!artistsIds.contains(anArtist.getId())){
+                            artistsIds.add(anArtist.getId());
                             listArtists.add(anArtist);
                         }
                     }
                     // MUSICS
-                    if(!listMusics.contains(aMusic)){
+                    if(!musicIds.contains(aMusic.getId())){
+                        musicIds.add(aMusic.getId());
                         listMusics.add(aMusic);
                     }
                 }
