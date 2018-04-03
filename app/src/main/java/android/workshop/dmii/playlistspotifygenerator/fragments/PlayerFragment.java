@@ -34,11 +34,12 @@ import retrofit.client.Response;
  * Created by benja on 21/02/2018.
  */
 
-public class PlayerFragment extends Fragment {
+public class PlayerFragment extends Fragment implements Player.PlayerListener {
 
     private Button btn_prev;
     private Button btn_play;
     private Button btn_next;
+    private Button btn_pause;
     private SpotifyService spotify;
     private User user;
     private MediaPlayer mediaPlayer;
@@ -62,13 +63,16 @@ public class PlayerFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         player = Player.getInstance();
+        player.setPlayerListener(this);
 
         btn_next = view.findViewById(R.id.player_next_btn);
         btn_play = view.findViewById(R.id.player_play_btn);
+        btn_pause = view.findViewById(R.id.player_pause_btn);
         btn_prev = view.findViewById(R.id.player_prev_btn);
 
         btn_prev.setVisibility(View.GONE);
         btn_next.setVisibility(View.GONE);
+        btn_pause.setVisibility(View.GONE);
 
         btn_prev.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -80,14 +84,21 @@ public class PlayerFragment extends Fragment {
         btn_play.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getContext(), "Play", Toast.LENGTH_SHORT).show();
 
                 if(player.canSendCommand){
-                    if(player.mediaPlayer.isPlaying()){
-                        player.mediaPlayer.pause();
-                    }else{
-                        player.mediaPlayer.start();
-                    }
+                    player.mediaPlayer.start();
+                    togglePlayPauseBtns(player.mediaPlayer.isPlaying());
+                }
+            }
+        });
+
+        btn_pause.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                if(player.canSendCommand){
+                    player.mediaPlayer.pause();
+                    togglePlayPauseBtns(player.mediaPlayer.isPlaying());
                 }
             }
         });
@@ -99,5 +110,21 @@ public class PlayerFragment extends Fragment {
             }
         });
 
+    }
+
+    private void togglePlayPauseBtns(boolean playing){
+        if(playing){
+            btn_pause.setVisibility(View.VISIBLE);
+            btn_play.setVisibility(View.GONE);
+        }else{
+            btn_pause.setVisibility(View.GONE);
+            btn_play.setVisibility(View.VISIBLE);
+        }
+
+    }
+
+    @Override
+    public void onStreamingReady() {
+        togglePlayPauseBtns(player.mediaPlayer.isPlaying());
     }
 }

@@ -10,9 +10,14 @@ import java.io.IOException;
 
 public class Player {
 
+    public interface PlayerListener{
+        void onStreamingReady();
+    }
+
     private Music currentMusic;
     public boolean canSendCommand;
     public MediaPlayer mediaPlayer;
+    private PlayerListener playerListener;
     //TODO : gérer le prev/next si on lance une playlist et gérer la playlist
 
 
@@ -24,6 +29,10 @@ public class Player {
     public Player(){
         this.canSendCommand = false;
         this.mediaPlayer = new MediaPlayer();
+    }
+
+    public void setPlayerListener(PlayerListener playerListener) {
+        this.playerListener = playerListener;
     }
 
     public void setCurrentMusic(Music music){
@@ -51,6 +60,7 @@ public class Player {
                 public void onPrepared(MediaPlayer mp) {
                     mediaPlayer.start();
                     canSendCommand = true;
+                    playerListener.onStreamingReady();
                 }
             });
 
