@@ -17,6 +17,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.workshop.dmii.playlistspotifygenerator.R;
+import android.workshop.dmii.playlistspotifygenerator.activities.DashboardActivity;
 import android.workshop.dmii.playlistspotifygenerator.helpers.CustomAdapter;
 import android.workshop.dmii.playlistspotifygenerator.models.Artist;
 import android.workshop.dmii.playlistspotifygenerator.models.Music;
@@ -31,8 +32,11 @@ import kaaes.spotify.webapi.android.SpotifyCallback;
 import kaaes.spotify.webapi.android.SpotifyError;
 import kaaes.spotify.webapi.android.SpotifyService;
 import kaaes.spotify.webapi.android.models.CategoriesPager;
+import kaaes.spotify.webapi.android.models.Pager;
 import kaaes.spotify.webapi.android.models.Playlist;
+import kaaes.spotify.webapi.android.models.PlaylistTrack;
 import kaaes.spotify.webapi.android.models.Recommendations;
+import kaaes.spotify.webapi.android.models.Track;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
@@ -159,29 +163,20 @@ public class GeneratePlaylistFragment extends Fragment {
             options.put("seed_tracks", selectedTrack.getId());
         }
 
-        /*spotify.createPlaylist(userId, options, new Callback<Playlist>() {
-            @Override
-            public void success(Playlist playlist, Response response) {
-
-            }
-
-            @Override
-            public void failure(RetrofitError error) {
-
-            }
-        });*/
 
         spotify.getRecommendations(options, new SpotifyCallback<Recommendations>() {
             @Override
             public void failure(SpotifyError spotifyError) {
-
+                Toast.makeText(getContext(), spotifyError.getMessage(), Toast.LENGTH_SHORT).show();
             }
 
             @Override
             public void success(Recommendations recommendations, Response response) {
-
+                createPlaylist(newPlaylistName, recommendations);
             }
         });
+
+
     }
 
     public void loadSpinners(Spinner artistsSpinner, Spinner tracksSpinner, ArrayList<Artist> listArtists, ArrayList<Music> listMusics){
@@ -219,6 +214,58 @@ public class GeneratePlaylistFragment extends Fragment {
 
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {}
+        });
+
+    }
+
+    public void createPlaylist(String name, Recommendations recommendations){
+        String userId = user.getInstance().getId();
+
+        Map<String, Object> options = new HashMap<>();
+        options.put("name", name);
+        options.put("public", true);
+
+
+        spotify.createPlaylist(userId, options, new Callback<Playlist>() {
+            @Override
+            public void success(Playlist playlist, Response response) {
+                saveTracksIntoPlayList(playlist.id, recommendations);
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+                Toast.makeText(getContext(),error.getMessage(),Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void saveTracksIntoPlayList(String playListId, Recommendations recommendations){
+
+        String uri = "";
+
+        for(int i = 0 ; i < recommendations.tracks.size() ; i++){
+            Track currentTrack = recommendations.tracks.get(i);
+
+            uri  = uri.concat(currentTrack.uri);
+            if(i != recommendations.tracks.size() -1){
+                uri = uri.concat(",");
+            }
+        }
+
+        Map<String, Object> optionParameters = new HashMap<>();
+        Map<String, Object> optionBody = new HashMap<>();
+        optionParameters.put("uris", uri);
+
+        spotify.addTracksToPlaylist(user.getId(), playListId, optionParameters, optionBody, new Callback<Pager<PlaylistTrack>>() {
+            @Override
+            public void success(Pager<PlaylistTrack> playlistTrackPager, Response response) {
+                ((DashboardActivity)getActivity()).loadNewFragment(new PlaylistListFragment(),false, true);
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+                Toast.makeText(getContext(), error.getMessage(), Toast.LENGTH_SHORT ).show();
+            }
         });
 
     }
