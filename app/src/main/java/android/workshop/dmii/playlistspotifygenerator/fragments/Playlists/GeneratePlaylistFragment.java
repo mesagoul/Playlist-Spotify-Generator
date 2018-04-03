@@ -16,10 +16,13 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.workshop.dmii.playlistspotifygenerator.R;
+import android.workshop.dmii.playlistspotifygenerator.helpers.CustomArtistAdapter;
+import android.workshop.dmii.playlistspotifygenerator.helpers.CustomMusicAdapter;
+import android.workshop.dmii.playlistspotifygenerator.models.Artist;
+import android.workshop.dmii.playlistspotifygenerator.models.Music;
 import android.workshop.dmii.playlistspotifygenerator.models.User;
 import android.workshop.dmii.playlistspotifygenerator.network.SpotifyApiWrapper;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -100,32 +103,21 @@ public class GeneratePlaylistFragment extends Fragment {
 
 
                 //setting artistsSpinner items and adapter
-                ArrayList<String> artists = new ArrayList<String>();
-                artists.add("lol");
-                artists.add("mdr");
-                artists.add("xd");
+                user.getAllArtistsAndMusics(new User.GetAllListeners() {
+                    @Override
+                    public void onAllReady(ArrayList<Artist> listArtists, ArrayList<Music> listMusics) {
+                        Log.d("DEBUG", String.valueOf(listMusics.size()));
+                        Log.d("DEBUG", String.valueOf(listArtists.size()));
 
-                /*for(int i =0; i<artistsPager.artists.total ; i++){
-                    String currentCategory = (String) artistsPager.artists.items.get(i).name;
-                    categories.add(currentCategory);
-                }*/
+                        CustomArtistAdapter artistsDataAdapter = new CustomArtistAdapter(getActivity(), android.R.layout.simple_spinner_item, listArtists);
+                        artistsDataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                        artistsSpinner.setAdapter(artistsDataAdapter);
 
-                ArrayAdapter<String> artistsDataAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, artists);
-                artistsDataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                artistsSpinner.setAdapter(artistsDataAdapter);
-
-
-                //Setting tracks spinner
-                ArrayList<String> tracks = new ArrayList<String>();
-                tracks.add("musique 1");
-                tracks.add("musique 2");
-                tracks.add("musique 3");
-                tracks.add("musique 4");
-                tracks.add("musique 5");
-
-                ArrayAdapter<String> tracksDataAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, tracks);
-                tracksDataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                tracksSpinner.setAdapter(tracksDataAdapter);
+                        CustomMusicAdapter tracksDataAdapter = new CustomMusicAdapter(getActivity(), android.R.layout.simple_spinner_item, listMusics);
+                        tracksDataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                        tracksSpinner.setAdapter(tracksDataAdapter);
+                    }
+                });
             }
 
         });
