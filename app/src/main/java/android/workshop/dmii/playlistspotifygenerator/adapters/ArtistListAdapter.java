@@ -6,6 +6,7 @@ package android.workshop.dmii.playlistspotifygenerator.adapters;
         import android.view.View;
         import android.view.ViewGroup;
         import android.widget.Button;
+        import android.widget.LinearLayout;
         import android.widget.TextView;
         import android.workshop.dmii.playlistspotifygenerator.R;
         import android.workshop.dmii.playlistspotifygenerator.models.Artist;
@@ -33,8 +34,9 @@ public class ArtistListAdapter extends RecyclerView.Adapter<ArtistListAdapter.Vi
         Artist music = listArtist.get(position);
         holder.music_id.setText(String.valueOf(position));
         holder.music_title.setText(music.getName());
-        holder.music_delete.setVisibility(View.INVISIBLE);
-        holder.music_add.setVisibility(View.INVISIBLE);
+        holder.music_delete.setVisibility(View.GONE);
+        holder.music_add.setVisibility(View.GONE);
+        holder.play_container.setVisibility(View.GONE);
     }
 
     @Override
@@ -48,6 +50,7 @@ public class ArtistListAdapter extends RecyclerView.Adapter<ArtistListAdapter.Vi
         private final TextView music_title;
         private final Button music_delete;
         private final Button music_add;
+        private final LinearLayout play_container;
 
         ViewHolder(View itemView) {
             super(itemView);
@@ -56,6 +59,7 @@ public class ArtistListAdapter extends RecyclerView.Adapter<ArtistListAdapter.Vi
             music_title = (TextView) itemView.findViewById(R.id.item_title);
             music_delete = (Button) itemView.findViewById(R.id.item_delete);
             music_add = (Button) itemView.findViewById(R.id.item_add);
+            play_container = (LinearLayout) itemView.findViewById(R.id.item_listen_container);
 
         }
     }

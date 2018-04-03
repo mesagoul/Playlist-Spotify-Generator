@@ -102,6 +102,7 @@ public class User extends ViewModel{
     public void getSavedTracks(SavedMusicsListener listener){
         ArrayList<Music> tempList = new ArrayList<Music>();
         Map<String, Object> options = new HashMap<>();
+        options.put("limit", "50");
 
         spotify.getMySavedTracks(options, new SpotifyCallback<Pager<SavedTrack>>() {
             @Override
