@@ -163,7 +163,7 @@ public class CreatePlaylistFragment extends Fragment implements MusiclistAdapter
     }
 
     @Override
-    public void onItemClick(int position) {}
+    public void onListenClick(int position) {}
 
     @Override
     public void onCrossClick(int position, LinearLayout music_container, ArrayList<Music> listMusic) {

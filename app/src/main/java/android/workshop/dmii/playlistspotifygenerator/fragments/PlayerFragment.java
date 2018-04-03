@@ -67,6 +67,9 @@ public class PlayerFragment extends Fragment {
         btn_play = view.findViewById(R.id.player_play_btn);
         btn_prev = view.findViewById(R.id.player_prev_btn);
 
+        btn_prev.setVisibility(View.GONE);
+        btn_next.setVisibility(View.GONE);
+
         btn_prev.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

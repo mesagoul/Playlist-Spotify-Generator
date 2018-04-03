@@ -32,6 +32,24 @@
         android:layout_weight="80"/>
 
     <LinearLayout
+        android:id="@+id/item_listen_container"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="10">
+        <Button
+            android:layout_gravity="center"
+            android:id="@+id/item_listen_btn"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:background="@drawable/play"
+            />
+
+    </LinearLayout>
+
+
+    <LinearLayout
         android:layout_gravity="center"
         android:gravity="center"
         android:layout_width="0dp"

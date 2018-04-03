@@ -53,7 +53,7 @@ public class PlaylistDetailTracksFragment extends Fragment implements MusiclistA
 
 
     @Override
-    public void onItemClick(int position) {
+    public void onListenClick(int position) {
         Player.getInstance().setCurrentMusic(dataListMusic.get(position));
     }
 
