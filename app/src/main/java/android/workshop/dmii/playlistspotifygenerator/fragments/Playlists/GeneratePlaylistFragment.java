@@ -18,7 +18,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.workshop.dmii.playlistspotifygenerator.R;
 import android.workshop.dmii.playlistspotifygenerator.activities.DashboardActivity;
-import android.workshop.dmii.playlistspotifygenerator.helpers.CustomAdapter;
+import android.workshop.dmii.playlistspotifygenerator.adapters.CustomAdapter;
 import android.workshop.dmii.playlistspotifygenerator.models.Artist;
 import android.workshop.dmii.playlistspotifygenerator.models.Music;
 import android.workshop.dmii.playlistspotifygenerator.models.User;
