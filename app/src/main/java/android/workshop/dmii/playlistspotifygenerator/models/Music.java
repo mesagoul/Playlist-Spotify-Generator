@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import kaaes.spotify.webapi.android.models.ArtistSimple;
+import kaaes.spotify.webapi.android.models.Track;
 
 /**
  * Created by benja on 21/02/2018.

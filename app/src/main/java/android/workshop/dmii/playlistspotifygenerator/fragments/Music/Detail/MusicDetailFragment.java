@@ -55,7 +55,7 @@ public class MusicDetailFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        ((DashboardActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+        ((DashboardActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         songTextView = (TextView) getView().findViewById(R.id.music_detail_song_name);
         artistsList = (ListView) getView().findViewById(R.id.music_detail_artist_name);

@@ -12,7 +12,13 @@
         android:layout_height="0dp"
         android:ems="10"
         android:inputType="textPersonName"
-        android:text="@string/nom" />
+        android:hint="@string/nom" />
+
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Liste Musique"/>
 
     <android.support.v7.widget.RecyclerView
         android:layout_weight="80"

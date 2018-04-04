@@ -3,6 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:padding="20dp"
     tools:context="android.workshop.dmii.playlistspotifygenerator.fragments.Playlists.CreatePlaylistFragment">
 
     <EditText
@@ -13,17 +14,34 @@
         android:inputType="textPersonName"
         android:hint="@string/nom" />
 
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Genre"/>
+
     <Spinner
         android:id="@+id/genre_list"
         android:layout_width="match_parent"
         android:layout_height="47dp"
         />
 
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Musique"/>
+
     <Spinner
         android:id="@+id/tracks_list"
         android:layout_width="match_parent"
         android:layout_height="47dp"
         />
+
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Artist"/>
 
     <Spinner
         android:id="@+id/artists_list"
