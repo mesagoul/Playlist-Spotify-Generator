@@ -75,6 +75,7 @@ public class GeneratePlaylistFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        ((DashboardActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         Button generatePlaylistBtn = (Button) getView().findViewById(R.id.generate_btn);
         TextView playlistNameView = (TextView) getView().findViewById(R.id.playlist_name);

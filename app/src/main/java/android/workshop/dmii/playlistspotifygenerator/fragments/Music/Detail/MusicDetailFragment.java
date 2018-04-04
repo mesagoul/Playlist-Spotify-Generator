@@ -13,8 +13,11 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.workshop.dmii.playlistspotifygenerator.R;
+import android.workshop.dmii.playlistspotifygenerator.models.Music;
 
 public class MusicDetailFragment extends Fragment {
+
+    public Music currentMusic;
 
     public MusicDetailFragment() {
         // Required empty public constructor

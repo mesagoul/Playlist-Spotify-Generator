@@ -58,7 +58,6 @@ public class MusiclistAdapter extends RecyclerView.Adapter<MusiclistAdapter.View
                     listener.onCrossClick(position, holder.music_container, listMusic);
                 }
             });
-
             holder.play_container.setVisibility(View.GONE);
 
         }else{
@@ -80,6 +79,12 @@ public class MusiclistAdapter extends RecyclerView.Adapter<MusiclistAdapter.View
                 public void onClick(View v)
                 {
                     listener.onCrossClick(position, holder.music_container, listMusic);
+                }
+            });
+            holder.music_container.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    listener.onItemClick(position);
                 }
             });
 
@@ -118,5 +123,6 @@ public class MusiclistAdapter extends RecyclerView.Adapter<MusiclistAdapter.View
     public interface MusiclistAdapterListener {
         void onListenClick(int position);
         void onCrossClick(int position, LinearLayout music_container, ArrayList<Music> listMusic);
+        void onItemClick(int position);
     }
 }

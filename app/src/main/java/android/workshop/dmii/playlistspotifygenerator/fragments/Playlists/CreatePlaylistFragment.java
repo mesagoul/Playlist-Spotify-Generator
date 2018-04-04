@@ -64,6 +64,7 @@ public class CreatePlaylistFragment extends Fragment implements MusiclistAdapter
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        ((DashboardActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         btnCreate = view.findViewById(R.id.create_playslist_btn);
         nameList = view.findViewById(R.id.create_playlist_name);
@@ -178,5 +179,10 @@ public class CreatePlaylistFragment extends Fragment implements MusiclistAdapter
             listPositionsChecked.add(position);
             music_container.setBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
         }
+    }
+
+    @Override
+    public void onItemClick(int position) {
+
     }
 }

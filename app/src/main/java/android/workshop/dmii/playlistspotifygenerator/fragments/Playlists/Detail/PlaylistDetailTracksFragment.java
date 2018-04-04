@@ -13,7 +13,9 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 import android.workshop.dmii.playlistspotifygenerator.R;
+import android.workshop.dmii.playlistspotifygenerator.activities.DashboardActivity;
 import android.workshop.dmii.playlistspotifygenerator.adapters.MusiclistAdapter;
+import android.workshop.dmii.playlistspotifygenerator.fragments.Music.Detail.MusicDetailFragment;
 import android.workshop.dmii.playlistspotifygenerator.models.Music;
 import android.workshop.dmii.playlistspotifygenerator.models.Player;
 import android.workshop.dmii.playlistspotifygenerator.models.Playlist;
@@ -75,5 +77,12 @@ public class PlaylistDetailTracksFragment extends Fragment implements MusiclistA
                 }
             }
         });
+    }
+
+    @Override
+    public void onItemClick(int position) {
+        MusicDetailFragment musicDetailFragment = new MusicDetailFragment();
+        musicDetailFragment.currentMusic = dataListMusic.get(position);
+        ((DashboardActivity)getActivity()).loadNewFragment(musicDetailFragment,false,true);
     }
 }
