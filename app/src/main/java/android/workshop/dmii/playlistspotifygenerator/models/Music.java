@@ -143,4 +143,12 @@ public class Music {
     public void removeFromPlaylist(Integer playlistId){
 
     }
+
+    public String getImage() {
+        return "";
+    }
+
+    public String getAlbum() {
+        return albumName;
+    }
 }

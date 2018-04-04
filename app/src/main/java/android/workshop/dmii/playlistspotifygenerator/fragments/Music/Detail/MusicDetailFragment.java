@@ -10,14 +10,25 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.workshop.dmii.playlistspotifygenerator.R;
+import android.workshop.dmii.playlistspotifygenerator.activities.DashboardActivity;
 import android.workshop.dmii.playlistspotifygenerator.models.Music;
+
+import com.bumptech.glide.Glide;
 
 public class MusicDetailFragment extends Fragment {
 
     public Music currentMusic;
+
+    private ImageView songImage;
+    private TextView songTextView;
+    private TextView durationTextView;
+    private TextView albumTextView;
+    private ListView artistsList;
 
     public MusicDetailFragment() {
         // Required empty public constructor
@@ -33,19 +44,6 @@ public class MusicDetailFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-
-
-        //TODO in the method were we call THIS fragment :
-        /*
-        * Fragment detailFragment = new Fragment();
-            Bundle bundle = new Bundle();
-            bundle.putString("artist", artist.getName());
-            bundle.putString("music", music.getName());
-            bundle.putString("image", music.getImage());
-            detailFragment.setArguments(bundle);
-            ou via un intent.putExtra
-        * */
-
         return inflater.inflate(R.layout.fragment_music_detail, container, false);
     }
 
@@ -53,17 +51,19 @@ public class MusicDetailFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        ImageView songImage = (ImageView) getView().findViewById(R.id.music_image);
-        TextView songTextView = (TextView) getView().findViewById(R.id.music_detail_song_name);
-        TextView artistTextView = (TextView) getView().findViewById(R.id.music_detail_artist_name);
+        ((DashboardActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(false);
 
-        Bundle bundle = getArguments();
+        songTextView = (TextView) getView().findViewById(R.id.music_detail_song_name);
+        artistsList = (ListView) getView().findViewById(R.id.music_detail_artist_name);
+        albumTextView = (TextView) getView().findViewById(R.id.music_detail_album_name);
+        durationTextView = (TextView) getView().findViewById(R.id.music_detail_duration);
 
-        String artist = bundle.getString("artist") ;
-        artistTextView.setText(artist);
+        songTextView.setText("Titre : " + currentMusic.getName());
+        albumTextView.setText("Album : " + currentMusic.getAlbum());
+        durationTextView.setText("Durée : " + String.valueOf(currentMusic.getDuration() / 1000));
 
-        String song = bundle.getString("music");
-        songTextView.setText(song);
+        ArrayAdapter<String> adapter = new ArrayAdapter(getContext(), android.R.layout.simple_list_item_1, currentMusic.getArtistsNames());
+        artistsList.setAdapter(adapter);
 
 
     }
