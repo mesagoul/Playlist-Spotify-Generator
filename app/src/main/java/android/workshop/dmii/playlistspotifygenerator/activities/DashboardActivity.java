@@ -16,12 +16,14 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 import android.workshop.dmii.playlistspotifygenerator.R;
 import android.workshop.dmii.playlistspotifygenerator.fragments.PlayerFragment;
 import android.workshop.dmii.playlistspotifygenerator.fragments.Playlists.CreatePlaylistFragment;
 import android.workshop.dmii.playlistspotifygenerator.fragments.Playlists.GeneratePlaylistFragment;
 import android.workshop.dmii.playlistspotifygenerator.fragments.Playlists.PlaylistListFragment;
+import android.workshop.dmii.playlistspotifygenerator.models.User;
 
 /**
  * Created by admin on 06/03/2018.
@@ -54,9 +56,14 @@ public class DashboardActivity extends AppCompatActivity implements NavigationVi
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
+        View hView =  navigationView.getHeaderView(0);
+        TextView tv = (TextView)hView.findViewById(R.id.user_name);
+        tv.setText(User.getInstance().getName());
+
         loadNewFragment(new PlaylistListFragment(), false, true);
         loadPlayer();
     }
+
 
 
     @Override
