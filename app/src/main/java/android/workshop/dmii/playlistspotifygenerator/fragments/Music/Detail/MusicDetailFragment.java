@@ -1,5 +1,6 @@
 package android.workshop.dmii.playlistspotifygenerator.fragments.Music.Detail;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
@@ -19,6 +20,8 @@ import android.workshop.dmii.playlistspotifygenerator.activities.DashboardActivi
 import android.workshop.dmii.playlistspotifygenerator.models.Music;
 
 import com.bumptech.glide.Glide;
+
+import java.util.concurrent.TimeUnit;
 
 public class MusicDetailFragment extends Fragment {
 
@@ -47,6 +50,7 @@ public class MusicDetailFragment extends Fragment {
         return inflater.inflate(R.layout.fragment_music_detail, container, false);
     }
 
+    @SuppressLint("DefaultLocale")
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -60,7 +64,13 @@ public class MusicDetailFragment extends Fragment {
 
         songTextView.setText("Titre : " + currentMusic.getName());
         albumTextView.setText("Album : " + currentMusic.getAlbum());
-        durationTextView.setText("Durée : " + String.valueOf(currentMusic.getDuration() / 1000));
+
+        Float duration = currentMusic.getDuration();
+        int seconds = (int) (duration / 1000) % 60 ;
+        int minutes = (int) (duration / 1000) / 60;
+
+
+        durationTextView.setText("Durée : " + minutes +":" + seconds);
 
         ArrayAdapter<String> adapter = new ArrayAdapter(getContext(), android.R.layout.simple_list_item_1, currentMusic.getArtistsNames());
         artistsList.setAdapter(adapter);
