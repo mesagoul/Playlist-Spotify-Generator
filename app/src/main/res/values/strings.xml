@@ -18,6 +18,8 @@
 
     <string name="create">Creér</string>
     <string name="generate">Générer</string>
+
+    <string name="music_image_description">Music image description</string>
     <string name="delete">Supprimer</string>
     <string name="remove_message">Supprimer la playlist ?</string>
     <string name="remove_title">Supprimer</string>
