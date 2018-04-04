@@ -18,4 +18,9 @@
 
     <string name="create">Creér</string>
     <string name="generate">Générer</string>
+    <string name="delete">Supprimer</string>
+    <string name="remove_message">Supprimer la playlist ?</string>
+    <string name="remove_title">Supprimer</string>
+    <string name="ok">Ok</string>
+    <string name="cancel">Retour</string>
 </resources>

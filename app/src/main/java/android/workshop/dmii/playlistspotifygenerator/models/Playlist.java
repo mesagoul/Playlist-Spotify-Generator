@@ -2,17 +2,15 @@ package android.workshop.dmii.playlistspotifygenerator.models;
 
 import android.arch.lifecycle.ViewModel;
 import android.util.Log;
-import android.widget.Toast;
 import android.workshop.dmii.playlistspotifygenerator.network.SpotifyApiWrapper;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.LinkedList;
-import java.util.Map;
 
 import kaaes.spotify.webapi.android.SpotifyService;
 import kaaes.spotify.webapi.android.models.Pager;
 import kaaes.spotify.webapi.android.models.PlaylistTrack;
+import kaaes.spotify.webapi.android.models.Result;
 import kaaes.spotify.webapi.android.models.SnapshotId;
 import kaaes.spotify.webapi.android.models.TrackToRemove;
 import kaaes.spotify.webapi.android.models.TracksToRemove;
@@ -31,6 +29,9 @@ public class Playlist extends ViewModel {
     interface PlayListListener {
         void onTracksLoaded(ArrayList<Music> musicListTemp);
     }
+    public interface PlayListRemoveListener {
+        void onRemoveDone(boolean success, String error);
+    }
     public interface PlayListDeleteListener {
         void onTrackDeleted(boolean success);
     }
@@ -47,6 +48,22 @@ public class Playlist extends ViewModel {
         this.name = name;
         this.imageUrl = imageUrl;
         spotify = SpotifyApiWrapper.getInstance().getService();
+    }
+
+    public void remove(PlayListRemoveListener listener) {
+        // TODO
+        spotify.unfollowPlaylist(User.getInstance().getId(), this.getId(), new Callback<Result>() {
+            @Override
+            public void success(Result result, Response response) {
+                listener.onRemoveDone(true, "");
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+                listener.onRemoveDone(true, error.getMessage());
+
+            }
+        });
     }
 
     public void loadMusics(User.UserListeners listeners){
