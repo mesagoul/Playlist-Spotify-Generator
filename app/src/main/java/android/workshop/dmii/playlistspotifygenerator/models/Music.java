@@ -33,6 +33,17 @@ public class Music {
 
     }
 
+    public ArrayList<String> getArtistsNames(){
+
+        ArrayList<String> tempList = new ArrayList<String>();
+
+        for(Artist anArtist: this.artistsList){
+            tempList.add(anArtist.getName());
+        }
+
+        return tempList;
+    }
+
     public String getUrl(){
         return this.url;
     }
